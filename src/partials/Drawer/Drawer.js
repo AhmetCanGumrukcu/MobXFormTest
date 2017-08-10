@@ -8,6 +8,7 @@ const drawer = (props) => {
             <nav className="mdl-navigation">
                 <Link className="mdl-navigation__link" to="/">Home</Link>               
                 <Link className="mdl-navigation__link" to="/formsample">formsample</Link>
+                <Link className="mdl-navigation__link" to="/validation">validation</Link>
             </nav>
         </div>
     );

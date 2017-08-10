@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'style/index.css';
 import Home from 'views/Home';
 import FormSample from 'views/FormSample';
+import ValidationSample from 'views/ValidationSample';
 
 import Header from 'partials/Header';
 import Drawer from 'partials/Drawer';
@@ -17,6 +18,7 @@ ReactDOM.render(<BrowserRouter>
         <main className="mdl-layout__content">
            
                 <Switch>
+                    <Route path="/validation" component={ValidationSample} />     
                     <Route path="/formsample" component={FormSample} />                   
                     <Route path="/" component={Home} />
                 </Switch>

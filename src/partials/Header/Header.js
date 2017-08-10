@@ -10,6 +10,7 @@ const header = () => {
                 <nav className="mdl-navigation mdl-layout--large-screen-only">
                     <Link className="mdl-navigation__link" to="/">Home</Link>                    
                     <Link className="mdl-navigation__link" to="/formsample">formsample</Link>
+                    <Link className="mdl-navigation__link" to="/validation">validation</Link>
                 </nav>
             </div>
         </header>

@@ -21,7 +21,7 @@ class FormSample extends React.Component {
     constructor(props) {
         super(props);
         this.currencySelect = this.currencySelect.bind(this);
-        this.showData = this.showData.bind(this);       
+        this.showData = this.showData.bind(this);             
     }
 
     currencySelect(obj){       
@@ -50,6 +50,8 @@ class FormSample extends React.Component {
                         <TcellCheckbox label="Karaliste" name="BLACKLIST" value={CONTACT.BLACKLIST} onChange={(event) => {
                             this.contactForm.onChange(event)
                         }} />
+                        <TcellInput label="Satıcı Tag" name="VENDOR_TAG" value={CONTACT.VENDOR_TAG} />
+
                     </HorizontalForm>
                     <Button icon="delete" label="Clear" raised accent onClick={() => this.contactForm.clear()}></Button>
                     <Button icon='bookmark' label='Show Data' onClick={() => this.showData(CONTACT)} raised primary />

@@ -33,7 +33,7 @@ class TcellForm extends React.Component {
     }
 
     render() {
-        const { children } = this.props;
+        const { children, validation } = this.props;
         return (
             <form onSubmit={(e) => { e.preventDefault() }}>
                 {children}
@@ -43,7 +43,7 @@ class TcellForm extends React.Component {
 }
 
 TcellForm.propTypes ={
-    model: PropTypes.object
+    model: PropTypes.any
 };
 
 export default TcellForm;
