@@ -98,23 +98,26 @@ const factory = (Input) => {
         : undefined;
     };
 
-    handleSelect = (item, event) => {     
+    handleSelect = (item, event) => {
       if (this.props.onBlur) this.props.onBlur(event);
       if (!this.props.disabled && this.props.onChange) {
         if (this.props.name) event.target.name = this.props.name;
         //this.props.onChange(item, event);
 
-         let myEvent = {
-          target:{
+        let myEvent = {
+          target: {
             name: event.target.name,
             value: event.target.value = item
-          }          
+          }
         }
 
-        let filtered = this.props.source.filter(obj => obj.value === item);  
+        let filtered = this.props.source.filter(obj => obj.value === item);
         let selectedItem = filtered && filtered.length > 0 ? filtered[0] : null;
         this.props.onChange(myEvent);
-        this.props.onSelect(selectedItem);
+
+        if (this.props.onSelect) {
+          this.props.onSelect(selectedItem);
+        }
         this.close();
       }
     };

@@ -1,13 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Checkbox from '../checkbox';
 
-class TcellCheckbox extends React.Component{
-   
-    render(){
+class TcellCheckbox extends React.Component {
+
+    render() {
         const { value } = this.props;
-        return(
-            <Checkbox checked={value} {...this.props} />
+        const { error, ...rest } = this.props;
+        return (
+            <div>
+                <Checkbox checked={value} {...rest} />
+                {error ? <span>{error}</span> : null}
+            </div>
         );
     }
 }

@@ -1,39 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 class TcellForm extends React.Component {
-    constructor(props){
-        super(props);        
+    constructor(props) {
+        super(props);
         this.onChange = this.onChange.bind(this);
         this.updateProperty = this.updateProperty.bind(this);
         this.clear = this.clear.bind(this);
     }
 
-    updateProperty(key, value) {
-        this.props.model[key] = value
-    }
-
-    onChange(event) {                 
-        this.updateProperty(event.target.name, event.target.value)
-    }
-
-    clear(){
-        if(this.props.model){
-            for(let key in this.props.model){
-                if(_.isBoolean(this.props.model[key])){
-                    this.props.model[key] = false;
-                }else if(_.isString(this.props.model[key]) || _.isNumber(this.props.model[key])){
-                    this.props.model[key] = '';
-                }else if(_.isDate(this.props.model[key])){
-                    this.props.model[key] = null;
-                }
-            }
+    updateProperty(key, value) {                
+        if (this.props.model.fields.has(key)) {
+            this.props.model.$(key).set('value', value)
+            this.props.model.validate(key, { showErrors: true });
         }
     }
 
+    onChange(event) {                
+        this.updateProperty(event.target.name, event.target.value)
+    }
+
+    clear() {
+        if (this.props.model) {
+            this.props.model.clear();
+        }
+    }
+
+
     render() {
-        const { children, validation } = this.props;
+        const { children } = this.props;
         return (
             <form onSubmit={(e) => { e.preventDefault() }}>
                 {children}
@@ -42,7 +37,7 @@ class TcellForm extends React.Component {
     }
 }
 
-TcellForm.propTypes ={
+TcellForm.propTypes = {
     model: PropTypes.any
 };
 

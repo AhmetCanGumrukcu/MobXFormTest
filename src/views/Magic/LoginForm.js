@@ -1,23 +1,8 @@
-import React from 'react';
-
 import MobxReactForm from 'mobx-react-form';
-
+import { observable, action } from 'mobx';
 import validatorjs from 'validatorjs';
 
 const plugins = { dvr: validatorjs };
-
-const fields = {
-  email: {
-    label: 'Email',
-    placeholder: 'Insert Email',
-    rules: 'required|email|string|between:5,25',
-  },
-  password: {
-    label: 'Password',
-    placeholder: 'Insert Password',
-    rules: 'required|string|between:5,25',
-  },
-};
 
 class LoginForm extends MobxReactForm {
 
@@ -34,5 +19,18 @@ class LoginForm extends MobxReactForm {
     form.invalidate('This is a generic error message!');
   }
 }
+
+const fields = {
+  email: {
+    label: 'Email',
+    placeholder: 'Insert Email',
+    rules: 'required|email|string|between:5,25',
+  },
+  password: {
+    label: 'Password',
+    placeholder: 'Insert Password',
+    rules: 'required|string|between:5,25',
+  },
+};
 
 export default new LoginForm({ fields }, { plugins });
