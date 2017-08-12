@@ -14,25 +14,48 @@ import PaymentModel from './PaymentModel';
 import { Currencies } from './Lookup'
 
 class FormSample extends React.Component {
-    constructor(props) {
-        super(props);
-        this.currencySelect = this.currencySelect.bind(this);
-        this.postModel = this.postModel.bind(this);
+
+    handleContactFormChange = (event) => {
+        this.contactForm.onChange(event);
     }
 
-    currencySelect(obj) {
+    handlePaymentFormChange = (event) => {
+        this.paymentForm.onChange(event);
+    }
+
+    handleCurrencySelect = (obj) => {
         console.log(obj);
     }
 
-    postModel(model) {
-        model.validate({ showErrors: true })
+    handleContactPostModel = () => {
+        let mymodel = this.contactForm.props.model;
+        mymodel.validate({ showErrors: true })
             .then(({ isValid }) => {
                 if (!isValid) {
                     console.log("Invalidated!!!")
                 } else {
-                    console.log(model.values());
+                    console.log(mymodel.values());
                 }
             });
+    }
+    handlePaymentPostModel = () => {
+        let mymodel = this.paymentForm.props.model;
+        mymodel.validate({ showErrors: true })
+            .then(({ isValid }) => {
+                if (!isValid) {
+                    console.log("Invalidated!!!")
+                } else {
+                    console.log(mymodel.values());
+                }
+            });
+    }
+
+    handleContactFormClear = () => {        
+        this.contactForm.clear();
+    }
+
+    handlePaymentFormClear = () => {        
+        this.paymentForm.clear();
     }
 
     render() {
@@ -42,61 +65,38 @@ class FormSample extends React.Component {
                 <TcellForm ref={(r) => { this.contactForm = r; }} model={ContactModel}>
                     <HorizontalForm columnCount={3}>
                         <TcellInput label="Satıcı No" name="VENDOR_ID" value={ContactModel.$('VENDOR_ID').value} error={ContactModel.$('VENDOR_ID').error}
-                            onChange={(event) => {
-                                this.contactForm.onChange(event)
-                            }} />
+                            onChange={this.handleContactFormChange} />
                         <TcellInput label="Satıcı Adı" name="VENDOR_NAME" value={ContactModel.$('VENDOR_NAME').value} error={ContactModel.$('VENDOR_NAME').error}
-                            onChange={(event) => {
-                                this.contactForm.onChange(event)
-                            }} />
+                            onChange={this.handleContactFormChange} />
                         <TcellInput type="text" label="Ülke" name="COUNTRY" value={ContactModel.$('COUNTRY').value} error={ContactModel.$('COUNTRY').error}
-                            onChange={(event) => {
-                                this.contactForm.onChange(event)
-                            }} />
+                            onChange={this.handleContactFormChange} />
                         <TcellCheckbox label="Karaliste" name="BLACKLIST" value={ContactModel.$('BLACKLIST').value} error={ContactModel.$('BLACKLIST').error}
-                            onChange={(event) => {
-                                this.contactForm.onChange(event)
-                            }} />
+                            onChange={this.handleContactFormChange} />
                         <TcellInput label="Satıcı Tag" name="VENDOR_TAG"
-                            onChange={(event) => {
-                                this.contactForm.onChange(event)
-                            }} />
-
-
+                            onChange={this.handleContactFormChange} />
                     </HorizontalForm>
-                    <Button icon="delete" label="Clear" raised accent onClick={() => this.contactForm.clear()}></Button>
-                    <Button icon='bookmark' label='Show Data' onClick={() => this.postModel(this.contactForm.props.model)} raised primary />
+                    <Button icon="delete" label="Clear" raised accent onClick={this.handleContactFormClear}></Button>
+                    <Button icon='bookmark' label='Show Data' onClick={this.handleContactPostModel} raised primary />
                 </TcellForm>
 
                 <h4>Payment Form</h4>
                 <TcellForm ref={(r) => { this.paymentForm = r; }} model={PaymentModel}>
                     <HorizontalForm columnCount={2}>
                         <TcellInput label="Ödeme No" name="ID" value={PaymentModel.$('ID').value} error={PaymentModel.$('ID').error}
-                            onChange={(event) => {
-                                this.paymentForm.onChange(event)
-                            }} />
+                            onChange={this.handlePaymentFormChange} />
                         <TcellInput label="Tutar" name="AMOUNT" value={PaymentModel.$('AMOUNT').value} error={PaymentModel.$('AMOUNT').error}
-                            onChange={(event) => {
-                                this.paymentForm.onChange(event)
-                            }} />
+                            onChange={this.handlePaymentFormChange} />
                         <TcellDropdown
                             name="CURRENCY" value={PaymentModel.$('CURRENCY').value} error={PaymentModel.$('CURRENCY').error}
                             source={Currencies}
-                            onSelect={this.currencySelect}
-                            onChange={(event) => {
-                                this.paymentForm.onChange(event)
-                            }}
-
+                            onSelect={this.handleCurrencySelect}
+                            onChange={this.handlePaymentFormChange}
                         />
                         <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={PaymentModel.$('PAYMENT_DATE').value} error={PaymentModel.$('PAYMENT_DATE').error}
-                            onChange={(event) => {
-                                this.paymentForm.onChange(event)
-                            }}
-                        />
+                            onChange={this.handlePaymentFormChange} />
                     </HorizontalForm>
-
-                    <Button icon="delete" label="Clear" raised accent onClick={() => this.paymentForm.clear()}></Button>
-                    <Button icon='bookmark' label='Show Data' onClick={() => this.postModel(this.paymentForm.props.model)} raised primary />
+                    <Button icon="delete" label="Clear" raised accent onClick={this.handlePaymentFormClear}></Button>
+                    <Button icon='bookmark' label='Show Data' onClick={this.handlePaymentPostModel} raised primary />
                 </TcellForm>
             </div>
         );
