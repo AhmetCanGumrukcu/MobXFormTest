@@ -6,11 +6,12 @@ const plugins = { dvr: validatorjs };
 
 export default {
     setModelRules(model, rules) {     
-        let fields = model.get();
+        const fields = model.get();       
         if (rules) {
             for (let ruleKey in rules) {
                 if (fields[ruleKey]) {
                     fields[ruleKey].rules = rules[ruleKey].rules;
+                    fields[ruleKey].validators = rules[ruleKey].validators;
                 }
             }
         }
