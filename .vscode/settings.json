@@ -3,6 +3,8 @@
     "editor.quickSuggestions": {
         "other": true,
         "comments": true,
-        "strings": true
-    }
+        "strings": true        
+    },
+    "editor.fontSize": 16,
+    "editor.fontFamily": "Segoe UI, Consolas, 'Courier New', monospace"
 }

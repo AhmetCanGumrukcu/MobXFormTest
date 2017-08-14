@@ -1,4 +1,5 @@
 import React from 'react';
+import { observable } from "mobx";
 import { observer } from 'mobx-react';
 import Button from 'react-toolbox/lib/button';
 import TcellForm from 'common/TcellForm';
@@ -6,21 +7,23 @@ import HorizontalForm from 'common/Layout/HorizontalForm';
 import TcellInput from 'common/inputs/TcellInput';
 import TcellCheckbox from 'common/TcellCheckbox';
 import TcellDropdown from 'common/TcellDropdown';
+import ModelHelper from 'helpers/ModelHelper';
 
 import { Countries } from './Lookup'
+import Fields from './Fields';
+import Rules1 from './Rules1';
+import Rules2 from './Rules2';
 
-import Model from './Model';
+let Model = ModelHelper.generateModel(Fields);
 
 class ValidationSample extends React.Component {
 
-    handleContactFormChange = (event) => {
-        this.contactForm.onChange(event);
-    }
-
+  handleContactFormChange = (event) => {
+    this.contactForm.onChange(event);
+  }
   handleCountrySelect = (data) => {
     console.log(data);
   }
-
   handlePostModel = (model) => {
     let mymodel = this.contactForm.props.model;
     mymodel.validate({ showErrors: true })
@@ -32,16 +35,24 @@ class ValidationSample extends React.Component {
         }
       });
   }
-  handleFormClear = () => {        
-        this.contactForm.clear();
+  handleFormClear = () => {
+    this.contactForm.clear();
+  }
+
+  handleVendorIdRequiredToogle = (isRequired) => {
+    if (isRequired) {
+      Model = ModelHelper.setModelRules(Model, Rules1);
+    } else {
+       Model = ModelHelper.setModelRules(Model, Rules2);
     }
+  }
 
   render() {
     return (
       <TcellForm ref={(r) => { this.contactForm = r; }} model={Model} >
         <HorizontalForm columnCount={3}>
           <TcellInput label="Satıcı No" name="VENDOR_ID" value={Model.$('VENDOR_ID').value} error={Model.$('VENDOR_ID').error}
-           onChange={this.handleContactFormChange} />
+            onChange={this.handleContactFormChange} />
 
           <TcellInput label="Satıcı Adı" name="VENDOR_NAME" value={Model.$('VENDOR_NAME').value} error={Model.$('VENDOR_NAME').error}
             onChange={this.handleContactFormChange} />
@@ -54,7 +65,8 @@ class ValidationSample extends React.Component {
             source={Countries}
             onSelect={this.countrySelect}
             onChange={this.handleContactFormChange} />
-          <TcellCheckbox label="Karaliste" name="BLACKLIST" value={Model.$('BLACKLIST').value} error={Model.$('BLACKLIST').error}
+          <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED" value={Model.$('VENDOR_ID_REQUIRED').value} error={Model.$('VENDOR_ID_REQUIRED').error}
+            onToggle={this.handleVendorIdRequiredToogle}
             onChange={this.handleContactFormChange} />
         </HorizontalForm>
 

@@ -20,6 +20,7 @@ const factory = (Check) => {
       ]),
       name: PropTypes.string,
       onChange: PropTypes.func,
+      onToggle: PropTypes.func,
       onMouseEnter: PropTypes.func,
       onMouseLeave: PropTypes.func,
       style: styleShape,
@@ -38,19 +39,22 @@ const factory = (Check) => {
     };
 
     handleToggle = (event) => {
-    
+
       if (event.pageX !== 0 && event.pageY !== 0) this.blur();
       if (!this.props.disabled && this.props.onChange) {
         //this.props.onChange(!this.props.checked, event);
-      
+
         let myEvent = {
-          target:{
+          target: {
             name: event.target.name,
             value: event.target.value == "false"
-          }          
+          }
         }
 
         this.props.onChange(myEvent);
+        if (this.props.onToggle) {
+          this.props.onToggle(myEvent.target.value);
+        }
       }
     };
 
@@ -67,8 +71,11 @@ const factory = (Check) => {
     }
 
     render() {
+
+      const { onToggle, ...actualProps} = this.props;
+
       const { checked, children, disabled, label, name, style, onChange, // eslint-disable-line
-        onMouseEnter, onMouseLeave, theme, ...others } = this.props;
+        onMouseEnter, onMouseLeave, theme, ...others } = actualProps;
       const className = classnames(theme.field, {
         [theme.disabled]: this.props.disabled,
       }, this.props.className);
@@ -86,7 +93,7 @@ const factory = (Check) => {
             className={theme.input}
             disabled={disabled}
             name={name}
-            onChange={() => {}}
+            onChange={() => { }}
             onClick={this.handleToggle}
             ref={(node) => { this.inputNode = node; }}
             type="checkbox"

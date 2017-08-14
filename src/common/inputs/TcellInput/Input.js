@@ -54,6 +54,7 @@ const factory = (FontIcon) => {
         withIcon: PropTypes.string,
       }),
       type: PropTypes.string,
+      formattedValue: PropTypes.string,
       value: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.object,

@@ -1,10 +1,6 @@
 import { observable } from "mobx";
-import MobxReactForm from 'mobx-react-form';
-import validatorjs from 'validatorjs';
 
-const plugins = { dvr: validatorjs };
-
-const fields = observable({
+export default observable({
   VENDOR_ID: {
     value: '',
     rules: 'required|numeric',
@@ -22,15 +18,8 @@ const fields = observable({
     value: '',
     rules: 'required',
   },
-  BLACKLIST: {
-    value: false
+  VENDOR_ID_REQUIRED: {
+    value: true
   }
 });
 
-class ContactValidation extends MobxReactForm {
-  clear() {
-    this.init(fields);
-  }
-}
-
-export default new ContactValidation({ fields }, { plugins });

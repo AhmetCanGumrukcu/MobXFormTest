@@ -9,7 +9,7 @@ const fields = observable({
     value: 4568    
   },
   AMOUNT: {
-    value: 98670
+    value: ''
   },
   CURRENCY: {
     value: null

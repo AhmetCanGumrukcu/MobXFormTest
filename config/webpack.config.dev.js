@@ -97,6 +97,7 @@ module.exports = {
       'partials': path.resolve(__dirname, '../src/partials'),
       'common': path.resolve(__dirname, '../src/common'),
       'models': path.resolve(__dirname, '../src/models'),
+      'helpers': path.resolve(__dirname, '../src/helpers'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
