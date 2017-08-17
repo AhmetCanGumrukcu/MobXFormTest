@@ -27,6 +27,10 @@ let ValidationModel = ModelHelper.generateModel(ValidationFields);
 
 @inject('viewStore') @observer
 class FormSample extends React.Component {
+    constructor(props){
+        super(props);
+        console.log("Every time FormSample constructor...");
+    }
 
     handleContactFormChange = (event) => {
         this.contactForm.onChange(event);
@@ -93,7 +97,7 @@ class FormSample extends React.Component {
         }
     }
 
-    render() {            
+    render() {                    
         const { viewStore } = this.props;
         return (
             <div>
