@@ -98,17 +98,19 @@ const factory = (FontIcon) => {
     }
 
     handleChange = (event) => {
-      const { onChange, multiline, maxLength } = this.props;
-      const valueFromEvent = event.target.value;
+      //const { onChange, multiline, maxLength } = this.props;
+      //const valueFromEvent = event.target.value;
 
       // Trim value to maxLength if that exists (only on multiline inputs).
       // Note that this is still required even tho we have the onKeyPress filter
       // because the user could paste smt in the textarea.
-      const haveToTrim = (multiline && maxLength && event.target.value.length > maxLength);
-      const value = haveToTrim ? valueFromEvent.substr(0, maxLength) : valueFromEvent;
+      //const haveToTrim = (multiline && maxLength && event.target.value.length > maxLength);
+     //const value = haveToTrim ? valueFromEvent.substr(0, maxLength) : valueFromEvent;
 
       // propagate to to store and therefore to the input
       //if (onChange) onChange(value, event);
+
+      const { onChange } = this.props;
       if (onChange) onChange(event);
     };
 
