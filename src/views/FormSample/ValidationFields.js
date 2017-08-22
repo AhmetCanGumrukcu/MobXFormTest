@@ -43,6 +43,10 @@ export default observable({
         value: '',
         rules: 'required',
     },
+    CITY: {
+        value: undefined,
+        rules: 'required',
+    },
     VENDOR_ID_REQUIRED: {
         value: true
     }

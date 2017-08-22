@@ -13,6 +13,9 @@ export default observable({
   COUNTRY: {
     value: ''
   },
+  STATUS: {
+    value: 3
+  },
   BLACKLIST: {
     value: false
   }

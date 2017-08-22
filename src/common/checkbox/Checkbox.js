@@ -39,7 +39,6 @@ const factory = (Check) => {
     };
 
     handleToggle = (event) => {
-
       if (event.pageX !== 0 && event.pageY !== 0) this.blur();
       if (!this.props.disabled && this.props.onChange) {
         //this.props.onChange(!this.props.checked, event);

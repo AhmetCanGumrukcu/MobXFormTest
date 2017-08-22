@@ -6,7 +6,7 @@ class FormSampleViewStore {
         expanded: false
     })
     paymentCard = observable({
-        expanded: true
+        expanded: false
     })
     validationCard = observable({
         expanded: true
