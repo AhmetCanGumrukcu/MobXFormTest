@@ -1,18 +1,53 @@
-import React from 'react';
-import Checkbox from '../checkbox';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import green from 'material-ui/colors/green';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
 
-class TcellCheckbox extends React.Component {
+const styles = {
+    checked: {
+        color: green[500],
+    },
+};
 
+class TcellCheckbox extends Component {
+
+    handleChange = (event, selected) => {
+        let myEvent = {
+            target: {
+                name: event.target.name,
+                value: selected
+            }
+        }
+        this.props.onChange(myEvent);
+        if (this.props.onToggle) {
+            this.props.onToggle(myEvent.target.value);
+        }
+    };
     render() {
-        const { value } = this.props;
-        const { error, ...rest } = this.props;
+        const { classes, value, label, onChange, helperText, ...others } = this.props;
         return (
-            <div>
-                <Checkbox checked={value} {...rest} />
-                {error ? <span>{error}</span> : null}
-            </div>
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={ value }
+                        onChange={ this.handleChange }
+                        classes= {{ 
+                            checked: classes.checked 
+                            }}
+                        { ...others }
+                    />
+                }
+                label={label}
+            />
         );
     }
 }
 
-export default TcellCheckbox;
+TcellCheckbox.propTypes = {
+    classes: PropTypes.object.isRequired,
+    onToggle: PropTypes.func
+};
+
+export default withStyles(styles)(TcellCheckbox);

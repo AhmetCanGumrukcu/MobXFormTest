@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
 import { observable, observe } from 'mobx';
 import { observer } from "mobx-react";
-
 import TextField from 'material-ui/TextField';
 import List, { ListItem, ListItemIcon } from 'material-ui/List';
 import SearchIcon from 'material-ui-icons/Search';
-
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
-
 import _ from 'lodash';
 
+const styles = theme => ({
+  root: {
+        padding: 0        
+    }  
+});
 class TcellDataFieldButton extends React.Component {
     compState = observable({
         value: undefined,
@@ -30,7 +33,6 @@ class TcellDataFieldButton extends React.Component {
         } else {
             this.compState.display = id;
         }
-
         //todo
         setTimeout(() => {
             let oldVal = this.compState.display;
@@ -38,48 +40,39 @@ class TcellDataFieldButton extends React.Component {
             this.compState.display = oldVal;
         }, 50)
     }
-
     componentDidMount() {
         const { dataSource, value } = this.props;
         this.compState.value = this.props.value;
         this.setDisplayFromDatasource(dataSource, value)
-
     }
-
     componentWillReceiveProps(nextProps) {
         if (this.props.value != nextProps.value) {
             const { dataSource } = this.props;
             const { value } = nextProps;
             this.compState.value = value;
             this.setDisplayFromDatasource(dataSource, value)
-
-
         }
     }
     render() {
-        const { onChange, value, dataSource, ...others } = this.props;
+        const { onChange, value, dataSource, classes, ...others } = this.props;
         this.handleChange = onChange;
-        return (
-            <List>
-                <ListItem>
+        return (        
+                <ListItem classes={{ root: classes.root }}>
                     <TextField value={this.compState.display} readOnly  { ...others }></TextField>
                     <IconButton onClick={(event) => console.log("Hiii")}  aria-label="Search">
                         <SearchIcon />
                     </IconButton>
-                </ListItem>
-            </List>
+                </ListItem>          
         );
     };
 }
-
-
 TcellDataFieldButton.propTypes = {
     dataSource: PropTypes.array
 }
 TcellDataFieldButton.defaultProps = {
     dataSource: []
 };
-export default observer(TcellDataFieldButton);
+export default withStyles(styles)(observer(TcellDataFieldButton));
 
 
 

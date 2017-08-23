@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observable, observe } from 'mobx';
 import { observer } from "mobx-react";
-
 import TextField from 'material-ui/TextField';
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import _ from 'lodash';
@@ -25,7 +24,6 @@ class TcellDataField extends React.Component {
         } else {
             this.compState.display = id;
         }
-
         //todo
         setTimeout(() => {
             let oldVal = this.compState.display;
@@ -38,7 +36,6 @@ class TcellDataField extends React.Component {
         const { dataSource, value } = this.props;
         this.compState.value = this.props.value;
         this.setDisplayFromDatasource(dataSource, value)
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -47,19 +44,16 @@ class TcellDataField extends React.Component {
             const { value } = nextProps;
             this.compState.value = value;
             this.setDisplayFromDatasource(dataSource, value)
-
-
         }
     }
     render() {
-        const { onChange, value, dataSource, ...others } = this.props;
+        const { onChange, value, dataSource, classes, ...others } = this.props;
         this.handleChange = onChange;
         return (
             <TextField value={this.compState.display} readOnly  { ...others }></TextField>
         );
     };
 }
-
 
 TcellDataField.propTypes = {
     dataSource: PropTypes.array

@@ -22,8 +22,6 @@ function isEmail({ field, form }) {
     }
     return [isValid, message];
 }
-
-
 export default observable({
     VENDOR_ID: {
         value: '',
@@ -48,7 +46,7 @@ export default observable({
         rules: 'required',
     },
     VENDOR_ID_REQUIRED: {
-        value: true
+        value: false
     }
 });
 

@@ -3,6 +3,8 @@ import { observer, inject } from "mobx-react";
 import Button from 'react-toolbox/lib/button';
 
 import TextField from 'material-ui/TextField';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
+import Checkbox from 'material-ui/Checkbox';
 
 import TcellForm from 'common/TcellForm';
 import HorizontalForm from 'common/Layout/HorizontalForm';
@@ -82,6 +84,7 @@ class FormSample extends React.Component {
         console.log(data);
     }
     handleValidationPostModel = (model) => {
+        debugger
         let mymodel = this.validationForm.props.model;
         mymodel.validate({ showErrors: true })
             .then(({ isValid }) => {
@@ -95,33 +98,32 @@ class FormSample extends React.Component {
     handleValidationFormClear = () => {
         this.validationForm.clear();
     }
-    handleVendorIdRequiredToogle = (isRequired) => {
+    handleVendorIdRequiredToogle = (isRequired) => {        
         if (isRequired) {
             ValidationModel = ModelHelper.setModelRules(ValidationModel, Rules1);
         } else {
             ValidationModel = ModelHelper.setModelRules(ValidationModel, Rules2);
         }
     }
-
     handleSetValidationCity = () => {
         ValidationModel.$('CITY').set('value', 35);
+        ValidationModel.$('VENDOR_ID_REQUIRED').value = !ValidationModel.$('VENDOR_ID_REQUIRED').value;
     }
 
     render() {
         const { viewStore } = this.props;
         return (
             <div>
-
                 <TcellCard name='validationCard' title='Validation Form' viewStore={viewStore}>
                     <TcellForm ref={(r) => { this.validationForm = r; }} model={ValidationModel} >
                         <HorizontalForm columnCount={3}>
                             <TextField label="Satıcı No" name="VENDOR_ID" value={ValidationModel.$('VENDOR_ID').value} error={ValidationModel.$('VENDOR_ID').error} helperText={ValidationModel.$('VENDOR_ID').error}
                                 onChange={this.handleValidationFormChange} />
 
-                            <TextField label="Satıcı Adı" name="VENDOR_NAME" value={ValidationModel.$('VENDOR_NAME').value} error={ValidationModel.$('VENDOR_NAME').error} helperText={ValidationModel.$('VENDOR_NAME').error}
+                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
                                 onChange={this.handleValidationFormChange} />
 
-                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
+                            <TextField label="Satıcı Adı" name="VENDOR_NAME" value={ValidationModel.$('VENDOR_NAME').value} error={ValidationModel.$('VENDOR_NAME').error} helperText={ValidationModel.$('VENDOR_NAME').error}
                                 onChange={this.handleValidationFormChange} />
 
                             <TcellDropdown
@@ -133,11 +135,10 @@ class FormSample extends React.Component {
                             <TextField label="E Posta" name="EMAIL" value={ValidationModel.$('EMAIL').value} error={ValidationModel.$('EMAIL').error} helperText={ValidationModel.$('EMAIL').error}
                                 onChange={this.handleValidationFormChange} />
 
-                            <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED" value={ValidationModel.$('VENDOR_ID_REQUIRED').value} error={ValidationModel.$('VENDOR_ID_REQUIRED').error}
+                            <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED" value={ValidationModel.$('VENDOR_ID_REQUIRED').value} helperText={ValidationModel.$('VENDOR_ID_REQUIRED').error}
                                 onToggle={this.handleVendorIdRequiredToogle}
                                 onChange={this.handleValidationFormChange} />
                         </HorizontalForm>
-
                         <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
                         <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
                         <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
@@ -188,8 +189,6 @@ class FormSample extends React.Component {
                         <Button icon='bookmark' label='Show Data' onClick={this.handlePaymentPostModel} raised primary />
                     </TcellForm>
                 </TcellCard>
-
-
             </div>
         );
     }
