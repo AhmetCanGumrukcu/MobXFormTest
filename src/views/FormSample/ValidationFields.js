@@ -24,21 +24,21 @@ function isEmail({ field, form }) {
 }
 export default observable({
     VENDOR_ID: {
-        value: '',
+        value: undefined,
         rules: 'required|numeric',
         //['required', 'regex:/^(19|20)[\\d]{2,2}$/']
     },
     VENDOR_NAME: {
-        value: '',
+        value: undefined,
         rules: 'required|string',
     },
     EMAIL: {
-        value: '',
+        value: undefined,
         validators: [isEmail]
         //rules: 'required|email|string|between:5,25',
     },
     COUNTRY: {
-        value: '',
+        value: undefined,
         rules: 'required',
     },
     CITY: {
@@ -47,6 +47,10 @@ export default observable({
     },
     VENDOR_ID_REQUIRED: {
         value: false
+    },
+    GENDER: {
+        value: undefined,
+        rules: 'required'
     }
 });
 

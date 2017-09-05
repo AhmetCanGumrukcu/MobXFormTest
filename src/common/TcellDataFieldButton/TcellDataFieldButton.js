@@ -11,20 +11,39 @@ import IconButton from 'material-ui/IconButton';
 import _ from 'lodash';
 
 const styles = theme => ({
-  root: {
-        padding: 0        
-    }  
+    root: {
+        padding: 0
+    }
 });
 class TcellDataFieldButton extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
     compState = observable({
         value: undefined,
-        display: undefined,
-
+        display: undefined
     })
     // valueObserver = observe(this.compState, "value", (change) => {
     //     console.log("value changed to ", change.newValue);
     // });
-    handleChange = () => { }
+    handleChange(event) {
+        event.preventDefault();
+        event.stopPropagation();        
+        debugger
+        if (this.props.dataSource && this.props.dataSource.length > 0) {
+            return;
+        } else {
+            this.props.onChange(event);
+        }
+    }
+
+    handleClick(){       
+        this.props.onClick();
+    }
 
     setDisplayFromDatasource(dataSource, id) {
         if (dataSource && dataSource.length > 0) {
@@ -45,7 +64,7 @@ class TcellDataFieldButton extends React.Component {
         this.compState.value = this.props.value;
         this.setDisplayFromDatasource(dataSource, value)
     }
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {      
         if (this.props.value != nextProps.value) {
             const { dataSource } = this.props;
             const { value } = nextProps;
@@ -54,15 +73,15 @@ class TcellDataFieldButton extends React.Component {
         }
     }
     render() {
-        const { onChange, value, dataSource, classes, ...others } = this.props;
-        this.handleChange = onChange;
-        return (        
-                <ListItem classes={{ root: classes.root }}>
-                    <TextField value={this.compState.display} readOnly  { ...others }></TextField>
-                    <IconButton onClick={(event) => console.log("Hiii")}  aria-label="Search">
-                        <SearchIcon />
-                    </IconButton>
-                </ListItem>          
+        const { onChange, onClick, value, dataSource, classes, ...others } = this.props;
+
+        return (
+            <ListItem classes={{ root: classes.root }}>
+                <TextField value={ this.compState.display } onChange={ this.handleChange } readOnly  { ...others }></TextField>
+                <IconButton onClick={ this.handleClick } aria-label="Search">
+                    <SearchIcon />
+                </IconButton>
+            </ListItem>
         );
     };
 }

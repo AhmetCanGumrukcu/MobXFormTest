@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { observer } from "mobx-react";
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
-import Card, { CardHeader, CardContent } from 'material-ui/Card';
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import Collapse from 'material-ui/transitions/Collapse';
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
 const styles = theme => ({
-  root: {
+    root: {
         margin: 20,
         background: 'white'
     },
@@ -69,7 +69,7 @@ class TcellCard extends React.Component {
                 <Collapse in={this.viewItem.expanded} transitionDuration="auto" >
                     <CardContent>
                         {children}
-                    </CardContent>
+                    </CardContent>                  
                 </Collapse>
             </Card>
 

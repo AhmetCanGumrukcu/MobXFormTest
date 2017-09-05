@@ -1,22 +1,29 @@
 import React from 'react';
 import { observer, inject } from "mobx-react";
 import Button from 'react-toolbox/lib/button';
+import { observable } from "mobx";
 
 import TextField from 'material-ui/TextField';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
-import Checkbox from 'material-ui/Checkbox';
+import { FormControlLabel } from 'material-ui/Form';
+import Radio from 'material-ui/Radio';
+import { CardActions } from 'material-ui/Card';
 
 import TcellForm from 'common/TcellForm';
 import HorizontalForm from 'common/Layout/HorizontalForm';
 import TcellInput from 'common/inputs/TcellInput';
 import TcellCheckbox from 'common/TcellCheckbox';
+import TcellRadioGroup from 'common/TcellRadioGroup';
 import TcellDatePicker from 'common/TcellDatePicker';
 import TcellDropdown from 'common/TcellDropdown';
 import TcellCard from 'common/TcellCard';
 import TcellSelectField from 'common/TcellSelectField';
 import TcellDataFieldButton from 'common/TcellDataFieldButton';
+import TcellDialog from 'common/TcellDialog';
 
 import ModelHelper from 'helpers/ModelHelper';
+
+import cityDialog from 'views/CityDialog';
 
 import { Currencies } from './Lookup'
 import { Countries } from './Lookup'
@@ -33,12 +40,36 @@ let ContactModel = ModelHelper.generateModel(ContactFields);
 let PaymentModel = ModelHelper.generateModel(PaymentFields);
 let ValidationModel = ModelHelper.generateModel(ValidationFields);
 
+ValidationModel.$('VENDOR_ID_REQUIRED').set('value', true);      
+
 @inject('viewStore') @observer
 class FormSample extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log("Every time FormSample constructor...");
-    }
+
+    viewState = observable({
+        cityDialog: {
+            open: false,
+            cancel: () => {
+                this.viewState.cityDialog.open = false
+            },
+            ok: (value) => {
+                ValidationModel.$('CITY').set('value', value);
+                ValidationModel.$('CITY').validate();
+                this.viewState.cityDialog.open = false
+            }
+        },
+        vendorIdDialog: {
+            open: false,
+            cancel: (value) => {
+                debugger
+                ValidationModel.$('VENDOR_ID_REQUIRED').set('value', !ValidationModel.$('VENDOR_ID_REQUIRED').value); 
+                this.viewState.vendorIdDialog.open = false
+            },
+            ok: (value) => {
+                this.handleVendorIdRequiredToogle(value);
+                this.viewState.vendorIdDialog.open = false
+            }
+        }
+    })
 
     handleContactFormChange = (event) => {
         this.contactForm.onChange(event);
@@ -84,7 +115,6 @@ class FormSample extends React.Component {
         console.log(data);
     }
     handleValidationPostModel = (model) => {
-        debugger
         let mymodel = this.validationForm.props.model;
         mymodel.validate({ showErrors: true })
             .then(({ isValid }) => {
@@ -98,7 +128,7 @@ class FormSample extends React.Component {
     handleValidationFormClear = () => {
         this.validationForm.clear();
     }
-    handleVendorIdRequiredToogle = (isRequired) => {        
+    handleVendorIdRequiredToogle = (isRequired) => {
         if (isRequired) {
             ValidationModel = ModelHelper.setModelRules(ValidationModel, Rules1);
         } else {
@@ -108,6 +138,9 @@ class FormSample extends React.Component {
     handleSetValidationCity = () => {
         ValidationModel.$('CITY').set('value', 35);
         ValidationModel.$('VENDOR_ID_REQUIRED').value = !ValidationModel.$('VENDOR_ID_REQUIRED').value;
+    }
+    handleCityButtonClick = () => {
+        this.viewState.cityDialog.open = true;
     }
 
     render() {
@@ -121,7 +154,9 @@ class FormSample extends React.Component {
                                 onChange={this.handleValidationFormChange} />
 
                             <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
-                                onChange={this.handleValidationFormChange} />
+                                onChange={this.handleValidationFormChange}
+                                onClick={this.handleCityButtonClick}
+                            />
 
                             <TextField label="Satıcı Adı" name="VENDOR_NAME" value={ValidationModel.$('VENDOR_NAME').value} error={ValidationModel.$('VENDOR_NAME').error} helperText={ValidationModel.$('VENDOR_NAME').error}
                                 onChange={this.handleValidationFormChange} />
@@ -136,12 +171,21 @@ class FormSample extends React.Component {
                                 onChange={this.handleValidationFormChange} />
 
                             <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED" value={ValidationModel.$('VENDOR_ID_REQUIRED').value} helperText={ValidationModel.$('VENDOR_ID_REQUIRED').error}
-                                onToggle={this.handleVendorIdRequiredToogle}
+                                //onToggle={this.handleVendorIdRequiredToogle}
+                                onToggle={() => this.viewState.vendorIdDialog.open = true}
                                 onChange={this.handleValidationFormChange} />
+                            <TcellRadioGroup label="Satıcı Cinsiyeti" name="GENDER" value={ValidationModel.$('GENDER').value} error={ValidationModel.$('GENDER').error} helperText={ValidationModel.$('GENDER').error}
+                                onChange={this.handleValidationFormChange} >
+                                <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
+                            </TcellRadioGroup>
                         </HorizontalForm>
+                         <CardActions>
                         <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
                         <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
                         <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
+                         </CardActions>
                     </TcellForm>
                 </TcellCard>
 
@@ -189,6 +233,28 @@ class FormSample extends React.Component {
                         <Button icon='bookmark' label='Show Data' onClick={this.handlePaymentPostModel} raised primary />
                     </TcellForm>
                 </TcellCard>
+
+                <TcellDialog name="cityDialog" title=" Şehir Seçiniz "
+                    open={this.viewState.cityDialog.open}>
+                    <DialogContent>
+                        {cityDialog}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.viewState.cityDialog.cancel} color="primary">Cancel</Button>
+                        <Button onClick={this.viewState.cityDialog.ok.bind(this, cityDialog.prototype.dialogValue())} color="primary">Ok</Button>
+                    </DialogActions>
+                </TcellDialog>
+
+                <TcellDialog name="vendorIdDialog" title="Dikkat!"
+                    open={this.viewState.vendorIdDialog.open}>
+                    <DialogContent>
+                        <span>"Satıcı No gerekliliği değişsin mi?"</span>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.viewState.vendorIdDialog.cancel.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)}  color="primary">Cancel</Button>
+                        <Button onClick={this.viewState.vendorIdDialog.ok.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)} color="primary">Ok</Button>
+                    </DialogActions>
+                </TcellDialog>
             </div>
         );
     }

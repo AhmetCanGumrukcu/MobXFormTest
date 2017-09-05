@@ -2,69 +2,43 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
-import cityDialog from 'views/cityDialog';
+import _ from 'lodash';
 
 class TcellDialog extends Component {
-  state = {
-    value: undefined,
-  };
 
-  componentWillMount() {
-    this.setState({ value: this.props.value });
-  }
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      // eslint-disable-next-line react/no-will-update-set-state
-      this.setState({ value: nextProps.value });
+  render() {
+    const { value, children, name, cancel, ok, title, ...other } = this.props;
+    let dialogContent = undefined;
+   
+    const contentChildren = children[0].props.children;    
+    if(_.isFunction(contentChildren)){
+      dialogContent = React.createElement(contentChildren);      
+    }else{      
+      dialogContent = contentChildren;
     }
-  }
-
-  handleCancel = () => {
-    this.props.onRequestClose(this.props.value);
-  };
-
-  handleOk = () => {
-    this.props.onRequestClose(this.state.value);
-  };
-
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  render() { 
-    const { value, children, ...other } = this.props;    
-    const dialogNode = React.createElement(children);   
+      
+    const actionsChildren = children[1].props.children;
 
     return (
       <Dialog
         ignoreBackdropClick
-        ignoreEscapeKeyUp
-        maxWidth="xs"
+        ignoreEscapeKeyUp      
         {...other}
       >
-        <DialogTitle>Phone Ringtone</DialogTitle>
+        <DialogTitle>{ title }</DialogTitle>
         <DialogContent>
           { 
-            dialogNode
+            dialogContent
           }
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleCancel} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={this.handleOk} color="primary">
-            Ok
-          </Button>
+         {
+           actionsChildren
+         }
         </DialogActions>
       </Dialog>
     );
   }
 }
-
-TcellDialog.propTypes = {
-  onRequestClose: PropTypes.func,
-  value: PropTypes.string,
-};
 
 export default TcellDialog;

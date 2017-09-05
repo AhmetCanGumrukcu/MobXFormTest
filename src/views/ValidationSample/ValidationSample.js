@@ -8,7 +8,7 @@ import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormControlLabel } from 'material-ui/Form';
 
 import TcellDialog from 'common/TcellDialog';
-import cityDialog from 'views/cityDialog';
+import cityDialog from 'views/CityDialog';
 
 const styles = theme => ({
   root: {
