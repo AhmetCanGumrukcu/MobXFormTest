@@ -40,7 +40,7 @@ let ContactModel = ModelHelper.generateModel(ContactFields);
 let PaymentModel = ModelHelper.generateModel(PaymentFields);
 let ValidationModel = ModelHelper.generateModel(ValidationFields);
 
-ValidationModel.$('VENDOR_ID_REQUIRED').set('value', true);      
+ValidationModel.$('VENDOR_ID_REQUIRED').set('value', true);
 
 @inject('viewStore') @observer
 class FormSample extends React.Component {
@@ -61,7 +61,7 @@ class FormSample extends React.Component {
             open: false,
             cancel: (value) => {
                 debugger
-                ValidationModel.$('VENDOR_ID_REQUIRED').set('value', !ValidationModel.$('VENDOR_ID_REQUIRED').value); 
+                ValidationModel.$('VENDOR_ID_REQUIRED').set('value', !ValidationModel.$('VENDOR_ID_REQUIRED').value);
                 this.viewState.vendorIdDialog.open = false
             },
             ok: (value) => {
@@ -137,7 +137,11 @@ class FormSample extends React.Component {
     }
     handleSetValidationCity = () => {
         ValidationModel.$('CITY').set('value', 35);
-        ValidationModel.$('VENDOR_ID_REQUIRED').value = !ValidationModel.$('VENDOR_ID_REQUIRED').value;
+        ValidationModel.$('COUNTRY').set('value', 4);
+        ValidationModel.$('GENDER').set('value', 'male');
+        ValidationModel.$('VENDOR_ID').set('value', 23);
+        ValidationModel.$('VENDOR_NAME').set('value', 'SONY');
+        ValidationModel.$('EMAIL').set('value', 'sony@yahoo.com');
     }
     handleCityButtonClick = () => {
         this.viewState.cityDialog.open = true;
@@ -161,11 +165,12 @@ class FormSample extends React.Component {
                             <TextField label="Satıcı Adı" name="VENDOR_NAME" value={ValidationModel.$('VENDOR_NAME').value} error={ValidationModel.$('VENDOR_NAME').error} helperText={ValidationModel.$('VENDOR_NAME').error}
                                 onChange={this.handleValidationFormChange} />
 
-                            <TcellDropdown
-                                name="COUNTRY" label="Ülke" value={ValidationModel.$('COUNTRY').value} error={ValidationModel.$('COUNTRY').error}
-                                source={Countries}
+                            <TcellSelectField label="Ülke" name="COUNTRY" value={ValidationModel.$('COUNTRY').value} error={ValidationModel.$('COUNTRY').error} helperText={ValidationModel.$('COUNTRY').error}
+                                dataSource={Countries}
                                 onSelect={this.countrySelect}
                                 onChange={this.handleValidationFormChange} />
+
+
 
                             <TextField label="E Posta" name="EMAIL" value={ValidationModel.$('EMAIL').value} error={ValidationModel.$('EMAIL').error} helperText={ValidationModel.$('EMAIL').error}
                                 onChange={this.handleValidationFormChange} />
@@ -181,11 +186,11 @@ class FormSample extends React.Component {
                                 <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
                             </TcellRadioGroup>
                         </HorizontalForm>
-                         <CardActions>
-                        <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
-                        <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
-                        <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
-                         </CardActions>
+                        <CardActions>
+                            <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
+                            <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
+                            <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
+                        </CardActions>
                     </TcellForm>
                 </TcellCard>
 
@@ -251,7 +256,7 @@ class FormSample extends React.Component {
                         <span>"Satıcı No gerekliliği değişsin mi?"</span>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.viewState.vendorIdDialog.cancel.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)}  color="primary">Cancel</Button>
+                        <Button onClick={this.viewState.vendorIdDialog.cancel.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)} color="primary">Cancel</Button>
                         <Button onClick={this.viewState.vendorIdDialog.ok.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)} color="primary">Ok</Button>
                     </DialogActions>
                 </TcellDialog>

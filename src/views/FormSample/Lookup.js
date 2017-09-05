@@ -6,10 +6,10 @@ const Currencies = [
 ];
 
 const Countries = [
-    { value: 1, label: 'America', tag: 'USA' },
-    { value: 2, label: 'Germany', tag: 'GER' },
-    { value: 3, label: 'Türkiye', tag: 'TUR' },
-    { value: 4, label: 'Japan', tag: 'JAP', disabled: true }
+    { id: 1, text: 'America', tag: 'USA' },
+    { id: 2, text: 'Germany', tag: 'GER' },
+    { id: 3, text: 'Türkiye', tag: 'TUR' },
+    { id: 4, text: 'Japan', tag: 'JAP', disabled: true }
 ];
 
 const Cities = [

@@ -1,65 +1,92 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import { observable, observe } from 'mobx';
+import { observer } from "mobx-react";
+import _ from 'lodash';
 
+@observer
 class TcellSelectField extends Component {
-
-  constructor(props){
-    super(props);
-    this.name = props.name;
+  constructor(props) {
+    super(props);   
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  state = {
+  compState = observable({
     anchorEl: undefined,
     open: false,
-  };
+    display: undefined
+  });
 
-  handleClick = event => {
-    this.setState({ open: true, anchorEl: event.currentTarget });
+  handleClick(event){
+    this.compState.open = true;
+    this.compState.anchorEl = event.currentTarget;
   };
 
   handleRequestClose = () => {
-    this.setState({ open: false });
+    this.compState.open = false;
   };
 
-  handleMenuItemClick = param => {   
+  handleMenuItemClick = param => {
     let myEvent = {
       target: {
-        name: this.name,
+        name: this.props.name,
         value: param.option.id
       }
     }
-    this.setState({ open: false });    
-    this.handleChange(myEvent);
+    this.compState.open = false;
+    this.compState.display = param.option.text;
+    this.props.onChange(myEvent);
   }
 
-  handleChange =() =>{}
+  setDisplayFromDatasource(dataSource, id) {
+    if (dataSource && dataSource.length > 0) {
+      let found = _.filter(dataSource, (item) => item.id === id);
+      this.compState.display = found && found.length > 0 ? found[0].text : undefined;
+    } else {
+      this.compState.display = id;
+    }
+    //todo
+    setTimeout(() => {
+      let oldVal = this.compState.display;
+      this.compState.display = "";
+      this.compState.display = oldVal;
+    }, 50)
+  }
+
+  componentWillReceiveProps(nextProps) { 
+    if (this.props.value != nextProps.value) {
+      const { dataSource } = this.props;
+      const { value } = nextProps;
+      this.compState.value = value;
+      this.setDisplayFromDatasource(dataSource, value)
+    }
+  }
 
   render() {
-    const { options, onChange, ...others } = this.props;
+    const { dataSource, onChange, value, ...others } = this.props;
     this.handleChange = onChange;
     return (
       <div>
         <TextField { ...others }
-          aria-owns={ this.state.open ? 'simple-menu' : null }
+          aria-owns={this.compState.open ? 'simple-menu' : null}
           aria-haspopup="true"
-          onClick={ this.handleClick }
-        >
-          Open Menu
+          onClick={this.handleClick}
+          value={this.compState.display}
+        >        
         </TextField>
         <Menu
           id="simple-menu"
-          anchorEl={this.state.anchorEl}
-          open={this.state.open}
+          anchorEl={this.compState.anchorEl}
+          open={this.compState.open}
           onRequestClose={this.handleRequestClose}
         >
-          {options.map((option, index) =>
+          {dataSource.map((option, index) =>
             <MenuItem
-              key={ index }              
-              selected={ this.selectedItem ? index === this.selectedItem.data : false }
-              onClick={ () => this.handleMenuItemClick({index, option}) }
-            >
-              { option.text }
+              key={index}
+              selected={this.selectedItem ? index === this.selectedItem.id : false}
+              onClick={() => this.handleMenuItemClick({ index, option })}>
+              {option.text}
             </MenuItem>
           )}
         </Menu>

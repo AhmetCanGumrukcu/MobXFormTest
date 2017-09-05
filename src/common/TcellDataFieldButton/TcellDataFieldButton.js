@@ -27,9 +27,7 @@ class TcellDataFieldButton extends React.Component {
         value: undefined,
         display: undefined
     })
-    // valueObserver = observe(this.compState, "value", (change) => {
-    //     console.log("value changed to ", change.newValue);
-    // });
+ 
     handleChange(event) {
         event.preventDefault();
         event.stopPropagation();        
