@@ -41,6 +41,9 @@ export default observable({
         value: undefined,
         rules: 'required',
     },
+    COUNTRY_MULTI: {
+        value: undefined        
+    },
     CITY: {
         value: undefined,
         rules: 'required',

@@ -18,6 +18,7 @@ import TcellDatePicker from 'common/TcellDatePicker';
 import TcellDropdown from 'common/TcellDropdown';
 import TcellCard from 'common/TcellCard';
 import TcellSelectField from 'common/TcellSelectField';
+import TcellSelectMultiple from 'common/TcellSelectMultiple';
 import TcellDataFieldButton from 'common/TcellDataFieldButton';
 import TcellDialog from 'common/TcellDialog';
 
@@ -138,6 +139,7 @@ class FormSample extends React.Component {
     handleSetValidationCity = () => {
         ValidationModel.$('CITY').set('value', 35);
         ValidationModel.$('COUNTRY').set('value', 4);
+        ValidationModel.$('COUNTRY_MULTI').set('value', [1,4]);
         ValidationModel.$('GENDER').set('value', 'male');
         ValidationModel.$('VENDOR_ID').set('value', 23);
         ValidationModel.$('VENDOR_NAME').set('value', 'SONY');
@@ -170,6 +172,10 @@ class FormSample extends React.Component {
                                 onSelect={this.countrySelect}
                                 onChange={this.handleValidationFormChange} />
 
+                            <TcellSelectMultiple label="Ülke2" name="COUNTRY_MULTI" value={ValidationModel.$('COUNTRY_MULTI').value} error={ValidationModel.$('COUNTRY_MULTI').error} helperText={ValidationModel.$('COUNTRY_MULTI').error}
+                                dataSource={Countries}
+                                onSelect={this.countrySelect}
+                                onChange={this.handleValidationFormChange} />
 
 
                             <TextField label="E Posta" name="EMAIL" value={ValidationModel.$('EMAIL').value} error={ValidationModel.$('EMAIL').error} helperText={ValidationModel.$('EMAIL').error}

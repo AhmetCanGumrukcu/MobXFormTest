@@ -32,10 +32,7 @@ class TcellCheckbox extends Component {
                 control={
                     <Checkbox
                         checked={ value }
-                        onChange={ this.handleChange }
-                        classes= {{ 
-                            checked: classes.checked 
-                            }}
+                        onChange={ this.handleChange }                      
                         { ...others }
                     />
                 }

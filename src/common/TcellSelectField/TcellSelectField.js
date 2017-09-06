@@ -27,7 +27,7 @@ class TcellSelectField extends Component {
     this.compState.open = false;
   };
 
-  handleMenuItemClick = param => {
+  handleMenuItemClick = param => {   
     let myEvent = {
       target: {
         name: this.props.name,
@@ -64,16 +64,18 @@ class TcellSelectField extends Component {
   }
 
   render() {
-    const { dataSource, onChange, value, ...others } = this.props;
+    const { dataSource, onChange, value, classes, ...others } = this.props;
+   
     this.handleChange = onChange;
     return (
       <div>
-        <TextField { ...others }
+        <TextField 
           aria-owns={this.compState.open ? 'simple-menu' : null}
           aria-haspopup="true"
-          onClick={this.handleClick}
-          value={this.compState.display}
-        >        
+          onClick={this.handleClick}        
+          value={this.compState.display}        
+          { ...others }
+           >        
         </TextField>
         <Menu
           id="simple-menu"
