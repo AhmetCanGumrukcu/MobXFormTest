@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
+import IconButton from 'material-ui/IconButton';
 import { observable, observe } from 'mobx';
 import { observer } from "mobx-react";
 import _ from 'lodash';
 
+class ReadOnlyTextField extends Component{
+  render(){
+    return(
+      <TextField { ...this.props }></TextField>
+    )
+  };
+}
+
 @observer
 class TcellSelectField extends Component {
   constructor(props) {
-    super(props);   
+    super(props);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -18,7 +29,7 @@ class TcellSelectField extends Component {
     display: undefined
   });
 
-  handleClick(event){
+  handleClick(event) {
     this.compState.open = true;
     this.compState.anchorEl = event.currentTarget;
   };
@@ -27,7 +38,7 @@ class TcellSelectField extends Component {
     this.compState.open = false;
   };
 
-  handleMenuItemClick = param => {   
+  handleMenuItemClick = param => {
     let myEvent = {
       target: {
         name: this.props.name,
@@ -54,7 +65,7 @@ class TcellSelectField extends Component {
     }, 50)
   }
 
-  componentWillReceiveProps(nextProps) { 
+  componentWillReceiveProps(nextProps) {
     if (this.props.value != nextProps.value) {
       const { dataSource } = this.props;
       const { value } = nextProps;
@@ -62,21 +73,29 @@ class TcellSelectField extends Component {
       this.setDisplayFromDatasource(dataSource, value)
     }
   }
+   componentDidMount(){
+        let inputNode = ReactDOM.findDOMNode(this.textField);
+        let inputs = inputNode.querySelectorAll('input');
+        inputs.forEach( (f) => {          
+            f.setAttribute('readonly', 'readonly')
+        } )        
+    }  
 
   render() {
     const { dataSource, onChange, value, classes, ...others } = this.props;
-   
+
     this.handleChange = onChange;
     return (
       <div>
-        <TextField 
+        <ReadOnlyTextField ref = { (r) => { this.textField = r} }
           aria-owns={this.compState.open ? 'simple-menu' : null}
           aria-haspopup="true"
-          onClick={this.handleClick}        
-          value={this.compState.display}        
+          onClick={this.handleClick}
+          value={this.compState.display}
           { ...others }
-           >        
-        </TextField>
+        >
+        </ReadOnlyTextField>
+        <ArrowDropDownIcon />
         <Menu
           id="simple-menu"
           anchorEl={this.compState.anchorEl}

@@ -5,6 +5,9 @@ import { themr } from 'react-css-themr';
 import { DATE_PICKER } from '../identifiers';
 import events from '../utils/events';
 import time from '../utils/time';
+import TextField from 'material-ui/TextField';
+import DateRangeIcon from 'material-ui-icons/DateRange';
+import IconButton from 'material-ui/IconButton';
 
 import InjectIconButton from '../button/IconButton';
 import InjectInput from '../input/Input';
@@ -105,7 +108,7 @@ const factory = (Input, DatePickerDialog) => {
     handleSelect = (value, event) => {
       //if (this.props.onChange) this.props.onChange(value, event);    
       let myEvent = {
-        target:{
+        target: {
           name: event.target.name,
           value: value
         }
@@ -125,22 +128,20 @@ const factory = (Input, DatePickerDialog) => {
       const formattedDate = date === undefined ? '' : finalInputFormat(value, locale);
 
       return (
-        <div data-react-toolbox="date-picker" className={this.props.theme.container}>
-          <Input
-            {...others}
-            className={classnames(this.props.theme.input, { [inputClassName]: inputClassName })}
-            disabled={readonly}
-            error={this.props.error}
-            icon={this.props.icon}
-            label={this.props.label}
-            name={this.props.name}
-            onFocus={this.handleInputFocus}
-            onKeyPress={this.handleInputKeyPress}
-            onClick={this.handleInputClick}
-            readOnly
-            type="text"
-            value={formattedDate}
-          />
+        <div data-react-toolbox="date-picker" className={this.props.theme.container}>        
+            <TextField           
+              {...others}
+              label={this.props.label}
+              name={this.props.name}
+              onFocus={this.handleInputFocus}
+              onKeyPress={this.handleInputKeyPress}
+              onClick={this.handleInputClick}
+              value={formattedDate} />
+            <IconButton    
+              style={{ justifyContent: 'flex-start', alignItems: 'flex-end' }}           
+              onClick={this.handleInputClick}>
+              <DateRangeIcon />
+            </IconButton>          
           <DatePickerDialog
             active={this.state.active}
             autoOk={autoOk}

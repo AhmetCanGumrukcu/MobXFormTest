@@ -54,6 +54,9 @@ export default observable({
     GENDER: {
         value: undefined,
         rules: 'required'
+    },
+    PAYMENT_DATE: {
+        value: undefined
     }
 });
 

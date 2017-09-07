@@ -144,6 +144,7 @@ class FormSample extends React.Component {
         ValidationModel.$('VENDOR_ID').set('value', 23);
         ValidationModel.$('VENDOR_NAME').set('value', 'SONY');
         ValidationModel.$('EMAIL').set('value', 'sony@yahoo.com');
+        ValidationModel.$('PAYMENT_DATE').set('value', new Date());
     }
     handleCityButtonClick = () => {
         this.viewState.cityDialog.open = true;
@@ -191,6 +192,8 @@ class FormSample extends React.Component {
                                 <FormControlLabel value="female" control={<Radio />} label="Female" />
                                 <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
                             </TcellRadioGroup>
+                               <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={ValidationModel.$('PAYMENT_DATE').value} error={ValidationModel.$('PAYMENT_DATE').error}
+                                onChange={this.handleValidationFormChange} />
                         </HorizontalForm>
                         <CardActions>
                             <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>

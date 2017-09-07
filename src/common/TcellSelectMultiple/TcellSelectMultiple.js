@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
+
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Checkbox from 'material-ui/Checkbox';
+import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
+import IconButton from 'material-ui/IconButton';
 import { observable, computed, observe } from 'mobx';
 import { observer } from "mobx-react";
 import _ from 'lodash';
+
+class ReadOnlyTextField extends Component {
+    render() {
+        return (
+            <TextField { ...this.props }></TextField>
+        )
+    };
+}
 
 @observer
 class TcellSelectMultiple extends Component {
@@ -16,37 +28,44 @@ class TcellSelectMultiple extends Component {
         anchorEl: undefined,
         open: false,
         checkedItems: {},
-        display: ''     
+        display: ''
     });
 
     shapeDisplay() {
-         let actualDisplay = "";
+        let actualDisplay = "";
         for (let key in this.compState.checkedItems) {
             actualDisplay += this.compState.checkedItems[key].text;
             actualDisplay += ',';
             actualDisplay += '  ';
         }
-        if( actualDisplay.indexOf(',  ')  > -1 ){
-            actualDisplay = actualDisplay.substr(0, actualDisplay.length-3);
+        if (actualDisplay.indexOf(',  ') > -1) {
+            actualDisplay = actualDisplay.substr(0, actualDisplay.length - 3);
         }
         this.compState.display = actualDisplay;
     }
     handleClick(event) {
         this.compState.open = true;
         this.compState.anchorEl = event.currentTarget;
+
+        setTimeout(() => {
+            let oldVal = this.compState.display;
+            this.compState.display = "";
+            this.compState.display = oldVal;
+        }, 50)
+
+
     };
     handleRequestClose = () => {
         this.compState.open = false;
     };
-    handleMenuItemClick = param => {    
-        debugger
+    handleMenuItemClick = param => {      
         if (this.compState.checkedItems[param.option.id]) {
             delete this.compState.checkedItems[param.option.id]
         } else {
-            this.compState.checkedItems[param.option.id] = param.option;            
+            this.compState.checkedItems[param.option.id] = param.option;
         }
-        this.shapeDisplay();    
-         let myEvent = {
+        this.shapeDisplay();
+        let myEvent = {
             target: {
                 name: this.props.name,
                 value: Object.keys(this.compState.checkedItems).map((k) => this.compState.checkedItems[k].id)
@@ -56,46 +75,54 @@ class TcellSelectMultiple extends Component {
     }
     setCheckedItems(dataSource, ids) {
         let idArray = [];
-        if( _.isArray(ids)){
+        if (_.isArray(ids)) {
             idArray = ids;
-        }else if(!_.isEmpty(ids)){
+        } else if (!_.isEmpty(ids)) {
             idArray.push(ids);
-        }                
+        }
         this.compState.checkedItems = {};
         idArray.forEach(id => {
-             let found = _.find(dataSource, (option) => option.id === id);
-             this.compState.checkedItems[id] = found
+            let found = _.find(dataSource, (option) => option.id === id);
+            this.compState.checkedItems[id] = found
         });
         this.shapeDisplay();
     }
-    componentWillReceiveProps(nextProps) { 
+    componentWillReceiveProps(nextProps) {
         if (this.props.value != nextProps.value) {
             const { dataSource } = this.props;
-            const { value } = nextProps;          
+            const { value } = nextProps;
             this.setCheckedItems(dataSource, value)
         }
     }
-    getChecked =id =>{
-        if(this.compState.checkedItems[id]){
+    getChecked = id => {
+        if (this.compState.checkedItems[id]) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    render() {     
+    componentDidMount() {
+        let inputNode = ReactDOM.findDOMNode(this.textField);
+        let inputs = inputNode.querySelectorAll('textarea');
+        inputs.forEach((f) => {
+            f.setAttribute('readonly', 'readonly')
+        })
+    }
+    render() {
         const { dataSource, onChange, value, classes, ...others } = this.props;
         this.handleChange = onChange;
         return (
             <div>
-                <TextField
-                        multiline
+                <ReadOnlyTextField ref={(r) => { this.textField = r; }}
+                    multiline
                     aria-owns={this.compState.open ? 'simple-menu' : null}
                     aria-haspopup="true"
                     onClick={this.handleClick}
                     value={this.compState.display}
                     { ...others }
                 >
-                </TextField>
+                </ReadOnlyTextField>
+                <ArrowDropDownIcon />
                 <Menu
                     id="simple-menu"
                     anchorEl={this.compState.anchorEl}
@@ -103,18 +130,15 @@ class TcellSelectMultiple extends Component {
                     onRequestClose={this.handleRequestClose}
                 >
                     {dataSource.map((option, index) =>
-                        <div style={{ display: 'flex' }}>
-                            <Checkbox
-                                onChange= {() => this.handleMenuItemClick({ index, option })}
-                                checked={ this.getChecked([option.id]) }>
+                        <MenuItem
+                            key={index}
+                            selected={this.selectedItem ? index === this.selectedItem.id : false}
+                            onClick={() => this.handleMenuItemClick({ index, option })}>
+                            <Checkbox                                 
+                                checked={this.getChecked([option.id])}>
                             </Checkbox>
-                            <MenuItem
-                                key={index}
-                                selected={this.selectedItem ? index === this.selectedItem.id : false}
-                                onClick={() => this.handleMenuItemClick({ index, option })}>
-                                {option.text}
-                            </MenuItem>
-                        </div>
+                            {option.text}
+                        </MenuItem>
                     )}
                 </Menu>
             </div>
