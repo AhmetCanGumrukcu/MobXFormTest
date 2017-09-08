@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
-import 'style/index.css';
 import Home from 'views/Home';
 import FormSample from 'views/FormSample';
 import ValidationSample from 'views/ValidationSample';
