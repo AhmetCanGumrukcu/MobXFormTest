@@ -9,8 +9,7 @@ const header = () => {
                 <div className="mdl-layout-spacer"></div>
                 <nav className="mdl-navigation mdl-layout--large-screen-only">
                     <Link className="mdl-navigation__link" to="/">Home</Link>                    
-                    <Link className="mdl-navigation__link" to="/formsample">formsample</Link>
-                    <Link className="mdl-navigation__link" to="/validation">validation</Link>                  
+                    <Link className="mdl-navigation__link" to="/formsample">formsample</Link>                 
                 </nav>
             </div>
         </header>

@@ -20,8 +20,7 @@ ReactDOM.render(
                 <Header></Header>
                 <Drawer></Drawer>
                 <main className="mdl-layout__content">
-                    <Switch>
-                        <Route path="/validation" component={ValidationSample} />
+                    <Switch>                     
                         <Route path="/formsample" component={FormSample} />
                         <Route path="/" component={Home} />
                     </Switch>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { themr } from 'react-css-themr';
@@ -14,6 +15,14 @@ import InjectInput from '../input/Input';
 import InjectDialog from '../dialog/Dialog';
 import calendarFactory from './Calendar';
 import datePickerDialogFactory from './DatePickerDialog';
+
+class ReadOnlyTextField extends Component {
+    render() {
+        return (
+            <TextField { ...this.props }></TextField>
+        )
+    };
+}
 
 const factory = (Input, DatePickerDialog) => {
   class DatePicker extends Component {
@@ -118,6 +127,14 @@ const factory = (Input, DatePickerDialog) => {
       this.setState({ active: false });
     };
 
+     componentDidMount() {
+       debugger
+        let inputNode = ReactDOM.findDOMNode(this.textField);
+        let inputs = inputNode.querySelectorAll('input');
+        inputs.forEach((f) => {
+            f.setAttribute('readonly', 'readonly')
+        })
+    }
     render() {
       const { active, onDismiss,// eslint-disable-line
         autoOk, cancelLabel, enabledDates, disabledDates, inputClassName, inputFormat,
@@ -129,7 +146,7 @@ const factory = (Input, DatePickerDialog) => {
 
       return (
         <div data-react-toolbox="date-picker" className={this.props.theme.container}>        
-            <TextField           
+            <ReadOnlyTextField ref={(r) => { this.textField = r; }}          
               {...others}
               label={this.props.label}
               name={this.props.name}

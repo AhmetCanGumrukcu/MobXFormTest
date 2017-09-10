@@ -122,7 +122,7 @@ class TcellSelectMultiple extends Component {
                     { ...others }
                 >
                 </ReadOnlyTextField>
-                <ArrowDropDownIcon />
+                 <ArrowDropDownIcon /> 
                 <Menu
                     id="simple-menu"
                     anchorEl={this.compState.anchorEl}

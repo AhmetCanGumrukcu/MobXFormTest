@@ -157,7 +157,7 @@ class FormSample extends React.Component {
                 <TcellCard name='validationCard' title='Validation Form' viewStore={viewStore}>
                     <TcellForm ref={(r) => { this.validationForm = r; }} model={ValidationModel} >
                         <HorizontalForm columnCount={3}>
-                            <TextField label="Satıcı No99" name="VENDOR_ID" value={ValidationModel.$('VENDOR_ID').value} error={ValidationModel.$('VENDOR_ID').error} helperText={ValidationModel.$('VENDOR_ID').error}
+                            <TextField label="Satıcı No" name="VENDOR_ID" value={ValidationModel.$('VENDOR_ID').value} error={ValidationModel.$('VENDOR_ID').error} helperText={ValidationModel.$('VENDOR_ID').error}
                                 onChange={this.handleValidationFormChange} />
 
                             <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}

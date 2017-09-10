@@ -7,8 +7,7 @@ const drawer = (props) => {
             <span className="mdl-layout-title">Sub Menu</span>
             <nav className="mdl-navigation">
                 <Link className="mdl-navigation__link" to="/">Home</Link>               
-                <Link className="mdl-navigation__link" to="/formsample">formsample</Link>
-                <Link className="mdl-navigation__link" to="/validation">validation</Link>
+                <Link className="mdl-navigation__link" to="/formsample">formsample</Link>                
             </nav>
         </div>
     );
