@@ -9,6 +9,7 @@ import time from '../utils/time';
 import TextField from 'material-ui/TextField';
 import DateRangeIcon from 'material-ui-icons/DateRange';
 import IconButton from 'material-ui/IconButton';
+import { ListItem } from 'material-ui/List';
 
 import InjectIconButton from '../button/IconButton';
 import InjectInput from '../input/Input';
@@ -139,13 +140,13 @@ const factory = (Input, DatePickerDialog) => {
       const { active, onDismiss,// eslint-disable-line
         autoOk, cancelLabel, enabledDates, disabledDates, inputClassName, inputFormat,
         locale, maxDate, minDate, okLabel, onEscKeyDown, onOverlayClick, readonly,
-        sundayFirstDayOfWeek, value, ...others } = this.props;
+        sundayFirstDayOfWeek, value, classes, ...others } = this.props;
       const finalInputFormat = inputFormat || time.formatDate;
       const date = Object.prototype.toString.call(value) === '[object Date]' ? value : undefined;
       const formattedDate = date === undefined ? '' : finalInputFormat(value, locale);
 
       return (
-        <div data-react-toolbox="date-picker" className={this.props.theme.container}>        
+         <ListItem style={{ padding: 0  }}>
             <ReadOnlyTextField ref={(r) => { this.textField = r; }}          
               {...others}
               label={this.props.label}
@@ -178,7 +179,7 @@ const factory = (Input, DatePickerDialog) => {
             theme={this.props.theme}
             value={date}
           />
-        </div>
+        </ListItem>
       );
     }
   }
@@ -190,7 +191,7 @@ const Calendar = calendarFactory(InjectIconButton);
 const DatePickerDialog = datePickerDialogFactory(InjectDialog, Calendar);
 const DatePicker = factory(InjectInput, DatePickerDialog);
 
-export default themr(DATE_PICKER)(DatePicker);
+export default  themr(DATE_PICKER)(DatePicker);
 export {
   DatePickerDialog,
   factory as datePickerFactory,
