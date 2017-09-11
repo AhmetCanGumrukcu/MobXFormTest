@@ -9,6 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import { observable, computed, observe } from 'mobx';
 import { observer } from "mobx-react";
 import _ from 'lodash';
+import style from './style.css';
 
 class ReadOnlyTextField extends Component {
     render() {
@@ -113,7 +114,8 @@ class TcellSelectMultiple extends Component {
         this.handleChange = onChange;
         return (
             <div>
-                <ReadOnlyTextField ref={(r) => { this.textField = r; }}
+                <ReadOnlyTextField className={ style.innerDiv } 
+                    ref={(r) => { this.textField = r; }}
                     multiline
                     aria-owns={this.compState.open ? 'simple-menu' : null}
                     aria-haspopup="true"

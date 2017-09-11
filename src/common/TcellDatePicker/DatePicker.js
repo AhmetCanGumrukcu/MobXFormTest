@@ -15,6 +15,7 @@ import InjectInput from '../input/Input';
 import InjectDialog from '../dialog/Dialog';
 import calendarFactory from './Calendar';
 import datePickerDialogFactory from './DatePickerDialog';
+import style from './style.css'
 
 class ReadOnlyTextField extends Component {
     render() {
@@ -127,8 +128,7 @@ const factory = (Input, DatePickerDialog) => {
       this.setState({ active: false });
     };
 
-     componentDidMount() {
-       debugger
+     componentDidMount() {      
         let inputNode = ReactDOM.findDOMNode(this.textField);
         let inputs = inputNode.querySelectorAll('input');
         inputs.forEach((f) => {
@@ -154,8 +154,7 @@ const factory = (Input, DatePickerDialog) => {
               onKeyPress={this.handleInputKeyPress}
               onClick={this.handleInputClick}
               value={formattedDate} />
-            <IconButton    
-              style={{ justifyContent: 'flex-start', alignItems: 'flex-end' }}           
+            <IconButton className= { style.iconButton }                 
               onClick={this.handleInputClick}>
               <DateRangeIcon />
             </IconButton>          

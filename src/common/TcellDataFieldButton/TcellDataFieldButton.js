@@ -6,9 +6,11 @@ import { observer } from "mobx-react";
 import TextField from 'material-ui/TextField';
 import List, { ListItem, ListItemIcon } from 'material-ui/List';
 import SearchIcon from 'material-ui-icons/Search';
+import DateRangeIcon from 'material-ui-icons/DateRange';
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
 import _ from 'lodash';
+import style from './style.css'
 
 const styles = theme => ({
     root: {
@@ -76,8 +78,8 @@ class TcellDataFieldButton extends React.Component {
         return (
             <ListItem classes={{ root: classes.root }}>
                 <TextField value={ this.compState.display } onChange={ this.handleChange } readOnly  { ...others }></TextField>
-                <IconButton onClick={ this.handleClick } aria-label="Search">
-                    <SearchIcon />
+                <IconButton onClick={ this.handleClick } aria-label="Search" className={ style.iconButton }>
+                    <DateRangeIcon />
                 </IconButton>
             </ListItem>
         );

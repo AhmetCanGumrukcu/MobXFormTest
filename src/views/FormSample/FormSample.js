@@ -139,7 +139,7 @@ class FormSample extends React.Component {
     handleSetValidationCity = () => {
         ValidationModel.$('CITY').set('value', 35);
         ValidationModel.$('COUNTRY').set('value', 4);
-        ValidationModel.$('COUNTRY_MULTI').set('value', [1,4]);
+        ValidationModel.$('COUNTRY_MULTI').set('value', [1, 4]);
         ValidationModel.$('GENDER').set('value', 'male');
         ValidationModel.$('VENDOR_ID').set('value', 23);
         ValidationModel.$('VENDOR_NAME').set('value', 'SONY');
@@ -160,7 +160,7 @@ class FormSample extends React.Component {
                             <TextField label="Satıcı No" name="VENDOR_ID" value={ValidationModel.$('VENDOR_ID').value} error={ValidationModel.$('VENDOR_ID').error} helperText={ValidationModel.$('VENDOR_ID').error}
                                 onChange={this.handleValidationFormChange} />
 
-                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
+                            <TcellDataFieldButton name="CITY" label="Ödeme Tarihi" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
                                 onChange={this.handleValidationFormChange}
                                 onClick={this.handleCityButtonClick}
                             />
@@ -192,16 +192,19 @@ class FormSample extends React.Component {
                                 <FormControlLabel value="female" control={<Radio />} label="Female" />
                                 <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
                             </TcellRadioGroup>
-                               <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={ValidationModel.$('PAYMENT_DATE').value} error={ValidationModel.$('PAYMENT_DATE').error}
+                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={ValidationModel.$('PAYMENT_DATE').value} error={ValidationModel.$('PAYMENT_DATE').error}
                                 onChange={this.handleValidationFormChange} />
                         </HorizontalForm>
-                        <CardActions>
-                            <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
-                            <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
-                            <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
-                        </CardActions>
+                       
+                            <CardActions style={{ display: ' flex', flexWrap: 'wrap' }}>
+                                <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
+                                <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
+                                <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
+                            </CardActions>
+                       
+
                     </TcellForm>
-                </TcellCard>
+                </TcellCard >
 
                 <TcellCard name='contactCard' title='Contact Form' viewStore={viewStore}>
                     <TcellForm ref={(r) => { this.contactForm = r; }} model={ContactModel}>
@@ -269,7 +272,7 @@ class FormSample extends React.Component {
                         <Button onClick={this.viewState.vendorIdDialog.ok.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)} color="primary">Ok</Button>
                     </DialogActions>
                 </TcellDialog>
-            </div>
+            </div >
         );
     }
 }
