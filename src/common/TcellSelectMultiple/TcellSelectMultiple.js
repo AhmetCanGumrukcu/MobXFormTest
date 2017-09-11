@@ -114,7 +114,7 @@ class TcellSelectMultiple extends Component {
         this.handleChange = onChange;
         return (
             <div>
-                <ReadOnlyTextField className={ style.innerDiv } 
+                <ReadOnlyTextField
                     ref={(r) => { this.textField = r; }}
                     multiline
                     aria-owns={this.compState.open ? 'simple-menu' : null}
