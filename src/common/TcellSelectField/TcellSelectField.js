@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
+import { withStyles } from 'material-ui/styles';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import  { ListItem } from 'material-ui/List';
 import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import IconButton from 'material-ui/IconButton';
 import { observable, observe } from 'mobx';
 import { observer } from "mobx-react";
 import _ from 'lodash';
 
-class ReadOnlyTextField extends Component{
-  render(){
-    return(
+const styles = theme => ({
+    root: {
+        padding: 0
+    }
+});
+
+class ReadOnlyTextField extends Component {
+  render() {
+    return (
       <TextField { ...this.props }></TextField>
     )
   };
@@ -73,13 +81,17 @@ class TcellSelectField extends Component {
       this.setDisplayFromDatasource(dataSource, value)
     }
   }
-   componentDidMount(){
-        let inputNode = ReactDOM.findDOMNode(this.textField);
-        let inputs = inputNode.querySelectorAll('input');
-        inputs.forEach( (f) => {          
-            f.setAttribute('readonly', 'readonly')
-        } )        
-    }  
+  componentDidMount() {
+    let inputNode = ReactDOM.findDOMNode(this.textField);
+    let inputs = inputNode.querySelectorAll('input');
+    try {
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].setAttribute('readonly', 'readonly')
+      }
+    } catch (e) {
+      alert(e);
+    }
+  }
 
   render() {
     const { dataSource, onChange, value, classes, ...others } = this.props;
@@ -87,15 +99,17 @@ class TcellSelectField extends Component {
     this.handleChange = onChange;
     return (
       <div>
-        <ReadOnlyTextField ref = { (r) => { this.textField = r} }
-          aria-owns={this.compState.open ? 'simple-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-          value={this.compState.display}
-          { ...others }
-        >
-        </ReadOnlyTextField>
-        <ArrowDropDownIcon />
+        <ListItem classes={{ root: classes.root }}>
+          <ReadOnlyTextField ref={(r) => { this.textField = r }}
+            aria-owns={this.compState.open ? 'simple-menu' : null}
+            aria-haspopup="true"
+            onClick={this.handleClick}
+            value={this.compState.display}
+            { ...others }
+          >
+          </ReadOnlyTextField>
+          <ArrowDropDownIcon />
+        </ListItem>
         <Menu
           id="simple-menu"
           anchorEl={this.compState.anchorEl}
@@ -116,4 +130,4 @@ class TcellSelectField extends Component {
   }
 }
 
-export default TcellSelectField;
+export default withStyles(styles)(observer(TcellSelectField));

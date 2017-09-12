@@ -129,13 +129,17 @@ const factory = (Input, DatePickerDialog) => {
       this.setState({ active: false });
     };
 
-     componentDidMount() {      
-        let inputNode = ReactDOM.findDOMNode(this.textField);
-        let inputs = inputNode.querySelectorAll('input');
-        inputs.forEach((f) => {
-            f.setAttribute('readonly', 'readonly')
-        })
+  componentDidMount() {  
+    let inputNode = ReactDOM.findDOMNode(this.textField);
+    let inputs = inputNode.querySelectorAll('input');
+    try {
+      for(let i=0 ; i < inputs.length ; i++ ){
+        inputs[i].setAttribute('readonly', 'readonly')
+      }
+    } catch (e) {
+      alert(e);
     }
+  }
     render() {
       const { active, onDismiss,// eslint-disable-line
         autoOk, cancelLabel, enabledDates, disabledDates, inputClassName, inputFormat,

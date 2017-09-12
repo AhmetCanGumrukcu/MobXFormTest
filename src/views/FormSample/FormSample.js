@@ -160,7 +160,7 @@ class FormSample extends React.Component {
                             <TextField label="Satıcı No" name="VENDOR_ID" value={ValidationModel.$('VENDOR_ID').value} error={ValidationModel.$('VENDOR_ID').error} helperText={ValidationModel.$('VENDOR_ID').error}
                                 onChange={this.handleValidationFormChange} />
 
-                            <TcellDataFieldButton name="CITY" label="Ödeme Tarihi" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
+                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
                                 onChange={this.handleValidationFormChange}
                                 onClick={this.handleCityButtonClick}
                             />
@@ -200,9 +200,7 @@ class FormSample extends React.Component {
                                 <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
                                 <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
                                 <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
-                            </CardActions>
-                       
-
+                            </CardActions>   
                     </TcellForm>
                 </TcellCard >
 

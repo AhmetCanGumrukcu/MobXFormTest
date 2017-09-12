@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { observable, observe } from 'mobx';
@@ -6,7 +7,6 @@ import { observer } from "mobx-react";
 import TextField from 'material-ui/TextField';
 import List, { ListItem, ListItemIcon } from 'material-ui/List';
 import SearchIcon from 'material-ui-icons/Search';
-import DateRangeIcon from 'material-ui-icons/DateRange';
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
 import _ from 'lodash';
@@ -17,8 +17,15 @@ const styles = theme => ({
         padding: 0
     }
 });
-class TcellDataFieldButton extends React.Component {
 
+class ReadOnlyTextField extends Component {
+    render() {
+        return (
+            <TextField { ...this.props }></TextField>
+        )
+    };
+}
+class TcellDataFieldButton extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -29,11 +36,10 @@ class TcellDataFieldButton extends React.Component {
         value: undefined,
         display: undefined
     })
- 
+
     handleChange(event) {
         event.preventDefault();
-        event.stopPropagation();        
-        debugger
+        event.stopPropagation();      
         if (this.props.dataSource && this.props.dataSource.length > 0) {
             return;
         } else {
@@ -41,7 +47,7 @@ class TcellDataFieldButton extends React.Component {
         }
     }
 
-    handleClick(){       
+    handleClick() {
         this.props.onClick();
     }
 
@@ -63,8 +69,18 @@ class TcellDataFieldButton extends React.Component {
         const { dataSource, value } = this.props;
         this.compState.value = this.props.value;
         this.setDisplayFromDatasource(dataSource, value)
+
+        let inputNode = ReactDOM.findDOMNode(this.textField);
+        let inputs = inputNode.querySelectorAll('input');
+        try {
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].setAttribute('readonly', 'readonly')
+            }
+        } catch (e) {
+            alert(e);
+        }
     }
-    componentWillReceiveProps(nextProps) {      
+    componentWillReceiveProps(nextProps) {
         if (this.props.value != nextProps.value) {
             const { dataSource } = this.props;
             const { value } = nextProps;
@@ -77,9 +93,11 @@ class TcellDataFieldButton extends React.Component {
 
         return (
             <ListItem classes={{ root: classes.root }}>
-                <TextField value={ this.compState.display } onChange={ this.handleChange } readOnly  { ...others }></TextField>
-                <IconButton onClick={ this.handleClick } aria-label="Search" className={ style.iconButton }>
-                    <DateRangeIcon />
+                <ReadOnlyTextField ref={(r) => { this.textField = r }}
+                value={this.compState.display} onChange={this.handleChange} readOnly  { ...others }>
+                </ReadOnlyTextField>
+                <IconButton onClick={this.handleClick} aria-label="Search" className={style.iconButton}>
+                    <SearchIcon />
                 </IconButton>
             </ListItem>
         );

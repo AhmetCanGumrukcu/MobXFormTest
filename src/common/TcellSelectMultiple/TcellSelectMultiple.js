@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
-
+import { withStyles } from 'material-ui/styles';
+import  { ListItem } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Checkbox from 'material-ui/Checkbox';
 import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
@@ -9,7 +10,12 @@ import IconButton from 'material-ui/IconButton';
 import { observable, computed, observe } from 'mobx';
 import { observer } from "mobx-react";
 import _ from 'lodash';
-import style from './style.css';
+
+const styles = theme => ({
+    root: {
+        padding: 0
+    }
+});
 
 class ReadOnlyTextField extends Component {
     render() {
@@ -102,18 +108,23 @@ class TcellSelectMultiple extends Component {
             return false;
         }
     }
-    componentDidMount() {
-        let inputNode = ReactDOM.findDOMNode(this.textField);
-        let inputs = inputNode.querySelectorAll('textarea');
-        inputs.forEach((f) => {
-            f.setAttribute('readonly', 'readonly')
-        })
+  componentDidMount() {  
+    let inputNode = ReactDOM.findDOMNode(this.textField);
+    let inputs = inputNode.querySelectorAll('textarea');
+    try {
+      for(let i=0 ; i < inputs.length ; i++ ){
+        inputs[i].setAttribute('readonly', 'readonly')
+      }
+    } catch (e) {
+      alert(e);
     }
+  }
     render() {
         const { dataSource, onChange, value, classes, ...others } = this.props;
         this.handleChange = onChange;
         return (
             <div>
+                 <ListItem classes={{ root: classes.root }}>
                 <ReadOnlyTextField
                     ref={(r) => { this.textField = r; }}
                     multiline
@@ -125,6 +136,7 @@ class TcellSelectMultiple extends Component {
                 >
                 </ReadOnlyTextField>
                  <ArrowDropDownIcon /> 
+                 </ListItem>
                 <Menu
                     id="simple-menu"
                     anchorEl={this.compState.anchorEl}
@@ -148,4 +160,4 @@ class TcellSelectMultiple extends Component {
     }
 }
 
-export default TcellSelectMultiple;
+export default withStyles(styles)(observer(TcellSelectMultiple));
