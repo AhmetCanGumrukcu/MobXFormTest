@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
 import { withStyles } from 'material-ui/styles';
-import  { ListItem } from 'material-ui/List';
+import { ListItem } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Checkbox from 'material-ui/Checkbox';
 import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import IconButton from 'material-ui/IconButton';
 import { observable, computed, observe } from 'mobx';
-import { observer } from "mobx-react";
+import { observer } from 'mobx-react';
+import style from './style.css'
 import _ from 'lodash';
 
 const styles = theme => ({
     root: {
-        padding: 0
+        paddingTop: 0,
+        paddingLeft:0
     }
 });
 
@@ -65,7 +67,7 @@ class TcellSelectMultiple extends Component {
     handleRequestClose = () => {
         this.compState.open = false;
     };
-    handleMenuItemClick = param => {      
+    handleMenuItemClick = param => {
         if (this.compState.checkedItems[param.option.id]) {
             delete this.compState.checkedItems[param.option.id]
         } else {
@@ -108,35 +110,38 @@ class TcellSelectMultiple extends Component {
             return false;
         }
     }
-  componentDidMount() {  
-    let inputNode = ReactDOM.findDOMNode(this.textField);
-    let inputs = inputNode.querySelectorAll('textarea');
-    try {
-      for(let i=0 ; i < inputs.length ; i++ ){
-        inputs[i].setAttribute('readonly', 'readonly')
-      }
-    } catch (e) {
-      alert(e);
+    componentDidMount() {     
+        const inputNode = ReactDOM.findDOMNode(this.textField);
+        const inputs = inputNode.querySelectorAll('textarea');
+
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].setAttribute('readonly', 'readonly')
+        }
+
+        if (window.device.desktop()) {        
+            inputNode.querySelector('div').style.paddingRight = "14px";
+        }else if (window.device.android()) {
+            inputNode.querySelector('div').style.paddingRight = "28px";
+         }
     }
-  }
     render() {
         const { dataSource, onChange, value, classes, ...others } = this.props;
         this.handleChange = onChange;
         return (
             <div>
-                 <ListItem classes={{ root: classes.root }}>
-                <ReadOnlyTextField
-                    ref={(r) => { this.textField = r; }}
-                    multiline
-                    aria-owns={this.compState.open ? 'simple-menu' : null}
-                    aria-haspopup="true"
-                    onClick={this.handleClick}
-                    value={this.compState.display}
-                    { ...others }
-                >
-                </ReadOnlyTextField>
-                 <ArrowDropDownIcon /> 
-                 </ListItem>
+                <ListItem classes={{ root: classes.root }}>
+                    <ReadOnlyTextField
+                        ref={(r) => { this.textField = r; }}
+                        multiline
+                        aria-owns={this.compState.open ? 'simple-menu' : null}
+                        aria-haspopup="true"
+                        onClick={this.handleClick}
+                        value={this.compState.display}
+                        { ...others }
+                    >
+                    </ReadOnlyTextField>
+                    <ArrowDropDownIcon />
+                </ListItem>
                 <Menu
                     id="simple-menu"
                     anchorEl={this.compState.anchorEl}
@@ -148,7 +153,7 @@ class TcellSelectMultiple extends Component {
                             key={index}
                             selected={this.selectedItem ? index === this.selectedItem.id : false}
                             onClick={() => this.handleMenuItemClick({ index, option })}>
-                            <Checkbox                                 
+                            <Checkbox
                                 checked={this.getChecked([option.id])}>
                             </Checkbox>
                             {option.text}
