@@ -10,6 +10,7 @@ import TextField from 'material-ui/TextField';
 import DateRangeIcon from 'material-ui-icons/DateRange';
 import IconButton from 'material-ui/IconButton';
 import { ListItem } from 'material-ui/List';
+import DatePickerMobile from 'react-mobile-datepicker';
 
 import InjectIconButton from '../button/IconButton';
 import InjectInput from '../input/Input';
@@ -19,11 +20,11 @@ import datePickerDialogFactory from './DatePickerDialog';
 import style from './style.css'
 
 class ReadOnlyTextField extends Component {
-    render() {
-        return (
-            <TextField { ...this.props }></TextField>
-        )
-    };
+  render() {
+    return (
+      <TextField { ...this.props }></TextField>
+    )
+  };
 }
 
 const factory = (Input, DatePickerDialog) => {
@@ -77,6 +78,7 @@ const factory = (Input, DatePickerDialog) => {
 
     state = {
       active: this.props.active,
+      time: new Date()      
     };
 
     componentWillReceiveProps(nextProps) {
@@ -105,6 +107,7 @@ const factory = (Input, DatePickerDialog) => {
     handleInputClick = (event) => {
       events.pauseEvent(event);
       this.setState({ active: true });
+       this.setState({ active: true });
       if (this.props.onClick) this.props.onClick(event);
     };
 
@@ -117,10 +120,10 @@ const factory = (Input, DatePickerDialog) => {
     };
 
     handleSelect = (value, event) => {
-      //if (this.props.onChange) this.props.onChange(value, event);    
+      //if (this.props.onChange) this.props.onChange(value, event);        
       let myEvent = {
         target: {
-          name: event.target.name,
+          name: this.props.name,
           value: value
         }
       }
@@ -129,17 +132,62 @@ const factory = (Input, DatePickerDialog) => {
       this.setState({ active: false });
     };
 
-  componentDidMount() {  
-    let inputNode = ReactDOM.findDOMNode(this.textField);
-    let inputs = inputNode.querySelectorAll('input');
-    try {
-      for(let i=0 ; i < inputs.length ; i++ ){
-        inputs[i].setAttribute('readonly', 'readonly')
+    componentDidMount() {
+      let inputNode = ReactDOM.findDOMNode(this.textField);
+      let inputs = inputNode.querySelectorAll('input');
+      try {
+        for (let i = 0; i < inputs.length; i++) {
+          inputs[i].setAttribute('readonly', 'readonly')
+        }
+      } catch (e) {
+        alert(e);
       }
-    } catch (e) {
-      alert(e);
     }
-  }
+
+    createDateView() {
+      const { active, onDismiss,// eslint-disable-line
+        autoOk, cancelLabel, enabledDates, disabledDates, inputClassName, inputFormat,
+        locale, maxDate, minDate, okLabel, onEscKeyDown, onOverlayClick, readonly,
+        sundayFirstDayOfWeek, value, classes, ...others } = this.props;
+      const finalInputFormat = inputFormat || time.formatDate;
+      const date = Object.prototype.toString.call(value) === '[object Date]' ? value : undefined;
+      const formattedDate = date === undefined ? '' : finalInputFormat(value, locale);
+
+      if (window.device.mobile()) {
+        return <DatePickerMobile
+          value={this.state.time}
+          isOpen={this.state.active}
+          onSelect={this.handleSelect}
+          onCancel={this.handleDismiss} 
+          dateFormat={["YYYY","MM","DD"]}
+          confirmText="Tamam"
+          cancelText="İptal2"
+          />
+
+      } else if (window.device.tablet() || window.device.desktop()) {
+        return <DatePickerDialog
+          active={this.state.active}
+          autoOk={autoOk}
+          cancelLabel={cancelLabel}
+          className={this.props.className}
+          disabledDates={disabledDates}
+          enabledDates={enabledDates}
+          locale={locale}
+          maxDate={maxDate}
+          minDate={minDate}
+          name={this.props.name}
+          onDismiss={this.handleDismiss}
+          okLabel={okLabel}
+          onEscKeyDown={onEscKeyDown || this.handleDismiss}
+          onOverlayClick={onOverlayClick || this.handleDismiss}
+          onSelect={this.handleSelect}
+          sundayFirstDayOfWeek={sundayFirstDayOfWeek}
+          theme={this.props.theme}
+          value={date}
+        />
+      }
+    }
+
     render() {
       const { active, onDismiss,// eslint-disable-line
         autoOk, cancelLabel, enabledDates, disabledDates, inputClassName, inputFormat,
@@ -149,40 +197,23 @@ const factory = (Input, DatePickerDialog) => {
       const date = Object.prototype.toString.call(value) === '[object Date]' ? value : undefined;
       const formattedDate = date === undefined ? '' : finalInputFormat(value, locale);
 
+      const dia = this.createDateView();
+
       return (
-         <ListItem style={{ padding: 0  }}>
-            <ReadOnlyTextField ref={(r) => { this.textField = r; }}          
-              {...others}
-              label={this.props.label}
-              name={this.props.name}
-              onFocus={this.handleInputFocus}
-              onKeyPress={this.handleInputKeyPress}
-              onClick={this.handleInputClick}
-              value={formattedDate} />
-            <IconButton className= { style.iconButton }                 
-              onClick={this.handleInputClick}>
-              <DateRangeIcon />
-            </IconButton>          
-          <DatePickerDialog
-            active={this.state.active}
-            autoOk={autoOk}
-            cancelLabel={cancelLabel}
-            className={this.props.className}
-            disabledDates={disabledDates}
-            enabledDates={enabledDates}
-            locale={locale}
-            maxDate={maxDate}
-            minDate={minDate}
+        <ListItem style={{ padding: 0 }}>
+          <ReadOnlyTextField ref={(r) => { this.textField = r; }}
+            {...others}
+            label={this.props.label}
             name={this.props.name}
-            onDismiss={this.handleDismiss}
-            okLabel={okLabel}
-            onEscKeyDown={onEscKeyDown || this.handleDismiss}
-            onOverlayClick={onOverlayClick || this.handleDismiss}
-            onSelect={this.handleSelect}
-            sundayFirstDayOfWeek={sundayFirstDayOfWeek}
-            theme={this.props.theme}
-            value={date}
-          />
+            onFocus={this.handleInputFocus}
+            onKeyPress={this.handleInputKeyPress}
+            onClick={this.handleInputClick}
+            value={formattedDate} />
+          <IconButton className={style.iconButton}
+            onClick={this.handleInputClick}>
+            <DateRangeIcon />
+          </IconButton>
+          {dia}
         </ListItem>
       );
     }
@@ -195,7 +226,7 @@ const Calendar = calendarFactory(InjectIconButton);
 const DatePickerDialog = datePickerDialogFactory(InjectDialog, Calendar);
 const DatePicker = factory(InjectInput, DatePickerDialog);
 
-export default  themr(DATE_PICKER)(DatePicker);
+export default themr(DATE_PICKER)(DatePicker);
 export {
   DatePickerDialog,
   factory as datePickerFactory,

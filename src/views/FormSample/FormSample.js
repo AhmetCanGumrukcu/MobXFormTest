@@ -194,8 +194,7 @@ class FormSample extends React.Component {
                             </TcellRadioGroup>
                             <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={ValidationModel.$('PAYMENT_DATE').value} error={ValidationModel.$('PAYMENT_DATE').error}
                                 onChange={this.handleValidationFormChange} />
-                        </HorizontalForm>
-                       
+                        </HorizontalForm>                       
                             <CardActions style={{ display: ' flex', flexWrap: 'wrap' }}>
                                 <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
                                 <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
