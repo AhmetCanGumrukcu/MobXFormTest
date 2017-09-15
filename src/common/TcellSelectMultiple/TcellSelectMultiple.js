@@ -114,6 +114,13 @@ class TcellSelectMultiple extends Component {
         const inputNode = ReactDOM.findDOMNode(this.textField);
         const inputs = inputNode.querySelectorAll('textarea');
 
+        //ipad forEach tanımıyor!!!!!
+        // try{
+        // inputs.forEach(f => alert(f));
+        // }catch(e){
+        //     alert(e);
+        // }
+
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].setAttribute('readonly', 'readonly')
         }
