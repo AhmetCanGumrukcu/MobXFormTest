@@ -1,0 +1,29 @@
+﻿{
+  "files": [
+    "LICENSE",
+    "assets",
+    "dist",
+    "index.js",
+    "README.md"
+  ],
+  "name":  "b-framework",
+  "main": "index.js",
+  "version": "0.1.7",
+  "description": "BOA Core SPA Framework",
+  "author": {
+        "name": "BOA Team",
+        "email": "boa@kuveytturk.com",
+        "url": "http://www.kuveytturk.com"
+    },
+  "license": "Kuvveyt Turk",
+  "dependencies": {
+    "react": ">=15.0.0",
+    "react-dom": ">=15.0.0",
+    "b-component": ">=0.1.0",
+		"redux": "^3.6.0",
+		"react-router": "^2.8.1",
+		"redux-thunk": "^2.1.0",
+		"res": "^0.4.0",
+    "b-proxy": "^0.1.2"
+  }
+}

@@ -1,0 +1,27 @@
+﻿{
+  "name": "b-component",
+  "version": "0.1.8",
+  "description": "Base component built with React. This component is the base of all local components.",
+  "keywords":["bcomponent","b-component","boa","component"],
+  "homepage": "http://www.kuveytturk.com",
+  "files": [
+    "LICENSE",
+    "index.js",
+    "README.md"
+  ],
+  "main": "index.js",
+  "author": {
+    "name": "KuveytTurk BOA One Team",
+    "email": "boa@kuveytturk.com",
+    "url":"http://www.kuveytturk.com"
+  },
+  "license": "KuveytTurk",
+  "dependencies": {
+    "react": "^15.3.0",
+    "lodash": "^4.13.1",
+    "material-ui": "^0.16.0"
+  },
+  "publishConfig": {
+    "registry" : "http://srvnpm.kuveytturk.local"
+  }
+}

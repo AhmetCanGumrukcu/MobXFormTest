@@ -1,0 +1,25 @@
+﻿{
+  "files": [
+    "LICENSE",
+    "assets",
+    "dist",
+    "src",
+    "index.js",
+    "README.md"
+  ],
+  "main": "index.js",
+    "author": {
+        "name": "Kuveyt Turk BOA Team",
+        "email": "boa@kuveytturk",
+        "url": "www.kuveytturk.com"
+    },
+  "license": "",
+  "dependencies": {
+    "react": "^15.3.0",
+    "lodash": "^4.13.1",
+    "react-dom": "^15.3.0"
+  },
+  "publishConfig": {
+    "registry" : "http://srvnpm.kuveytturk.local"
+  }
+}

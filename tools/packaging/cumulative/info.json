@@ -1,0 +1,33 @@
+﻿{
+  "name": "kuveytturkcomponents",
+  "version": "1.0.0",
+  "description": "KuveytTurk Components Library built with React",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "files": [
+    "LICENSE",
+    "lib",
+    "dist",
+    "docs",
+    "index.js",
+    "catalog.json"
+  ],
+  "main": "index.js",
+  "directories": {
+    "lib": "lib/"
+  },
+  "author": {
+    "name": "KuveytTurk BOA One Team",
+    "email": "mobilwebdeveloper@kuveytturk.com"
+  },
+  "license": "KuveytTurk",
+  "dependencies": {
+    "react": ">=0.14.0",
+    "react-dom": ">=0.14.0",
+    "lodash-compat": ">=3.10.1",
+    "@component/base": ">=1.0.0"
+  }
+}

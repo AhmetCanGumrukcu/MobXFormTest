@@ -114,6 +114,11 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         enforce: 'pre',
+        loader: "./tools/tcell-props-loader/index.js"
+      },
+      {
+        test: /\.(js|jsx)$/,
+        enforce: 'pre',
         use: [
           {
             options: {

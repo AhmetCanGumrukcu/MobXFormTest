@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+#produced views
+/logs
+
 # testing
 /coverage
 

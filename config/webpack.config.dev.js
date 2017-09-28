@@ -1,5 +1,6 @@
 'use strict';
 
+process.env.NODE_ENV = 'development';
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -9,6 +10,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
@@ -99,6 +101,7 @@ module.exports = {
       'models': path.resolve(__dirname, '../src/models'),
       'helpers': path.resolve(__dirname, '../src/helpers'),
       'stores': path.resolve(__dirname, '../src/stores'),
+
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -115,7 +118,11 @@ module.exports = {
       // TODO: Disable require.ensure as it's not a standard language feature.
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       // { parser: { requireEnsure: false } },
-
+       {
+        test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        loader: "./tools/tcell-props-loader/index.js"
+      },
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
@@ -124,8 +131,7 @@ module.exports = {
         use: [
           {
             options: {
-              formatter: eslintFormatter,
-              
+              formatter: eslintFormatter
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -213,7 +219,7 @@ module.exports = {
       }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
-    ],
+    ]
   },
   plugins: [
     // Makes some environment variables available in index.html.

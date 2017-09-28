@@ -45,7 +45,6 @@ ValidationModel.$('VENDOR_ID_REQUIRED').set('value', true);
 
 @inject('viewStore') @observer
 class FormSample extends React.Component {
-
     viewState = observable({
         cityDialog: {
             open: false,
@@ -71,13 +70,6 @@ class FormSample extends React.Component {
             }
         }
     })
-
-    handleContactFormChange = (event) => {
-        this.contactForm.onChange(event);
-    }
-    handlePaymentFormChange = (event) => {
-        this.paymentForm.onChange(event);
-    }
     handleCurrencySelect = (obj) => {
         console.log(obj);
     }
@@ -108,10 +100,7 @@ class FormSample extends React.Component {
     }
     handlePaymentFormClear = () => {
         this.paymentForm.clear();
-    }
-    handleValidationFormChange = (event) => {
-        this.validationForm.onChange(event);
-    }
+    }   
     handleCountrySelect = (data) => {
         console.log(data);
     }
@@ -149,51 +138,30 @@ class FormSample extends React.Component {
     handleCityButtonClick = () => {
         this.viewState.cityDialog.open = true;
     }
-
-    render() {
-        const { viewStore } = this.props;
+    render() {      
         return (
             <div>
-                <TcellCard name='validationCard' title='Validation Form' viewStore={viewStore}>
+                <TcellCard name='validationCard' title='Validation Form'>
                     <TcellForm ref={(r) => { this.validationForm = r; }} model={ValidationModel} >
                         <HorizontalForm columnCount={3}>
-                            <TextField label="Satıcı No" name="VENDOR_ID" value={ValidationModel.$('VENDOR_ID').value} error={ValidationModel.$('VENDOR_ID').error} helperText={ValidationModel.$('VENDOR_ID').error}
-                                onChange={this.handleValidationFormChange} />
-
-                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} value={ValidationModel.$('CITY').value} error={ValidationModel.$('CITY').error} helperText={ValidationModel.$('CITY').error}
-                                onChange={this.handleValidationFormChange}
-                                onClick={this.handleCityButtonClick}
-                            />
-
-                            <TextField label="Satıcı Adı" name="VENDOR_NAME" value={ValidationModel.$('VENDOR_NAME').value} error={ValidationModel.$('VENDOR_NAME').error} helperText={ValidationModel.$('VENDOR_NAME').error}
-                                onChange={this.handleValidationFormChange} />
-
-                            <TcellSelectField label="Ülke" name="COUNTRY" value={ValidationModel.$('COUNTRY').value} error={ValidationModel.$('COUNTRY').error} helperText={ValidationModel.$('COUNTRY').error}
+                            <TextField label="Satıcı No" name="VENDOR_ID" />
+                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities}  onClick={this.handleCityButtonClick}/>
+                            <TextField label="Satıcı Adı" name="VENDOR_NAME"  />
+                            <TcellSelectField label="Ülke" name="COUNTRY" 
                                 dataSource={Countries}
-                                onSelect={this.countrySelect}
-                                onChange={this.handleValidationFormChange} />
-
-                            <TcellSelectMultiple label="Ülke2" name="COUNTRY_MULTI" value={ValidationModel.$('COUNTRY_MULTI').value} error={ValidationModel.$('COUNTRY_MULTI').error} helperText={ValidationModel.$('COUNTRY_MULTI').error}
+                                onSelect={this.countrySelect}/>
+                            <TcellSelectMultiple label="Ülke2" name="COUNTRY_MULTI" 
                                 dataSource={Countries}
-                                onSelect={this.countrySelect}
-                                onChange={this.handleValidationFormChange} />
-
-
-                            <TextField label="E Posta" name="EMAIL" value={ValidationModel.$('EMAIL').value} error={ValidationModel.$('EMAIL').error} helperText={ValidationModel.$('EMAIL').error}
-                                onChange={this.handleValidationFormChange} />
-
-                            <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED" value={ValidationModel.$('VENDOR_ID_REQUIRED').value} helperText={ValidationModel.$('VENDOR_ID_REQUIRED').error}
-                                //onToggle={this.handleVendorIdRequiredToogle}
-                                onToggle={() => this.viewState.vendorIdDialog.open = true}
-                                onChange={this.handleValidationFormChange} />
-                            <TcellRadioGroup label="Satıcı Cinsiyeti" name="GENDER" value={ValidationModel.$('GENDER').value} error={ValidationModel.$('GENDER').error} helperText={ValidationModel.$('GENDER').error}
-                                onChange={this.handleValidationFormChange} >
+                                onSelect={this.countrySelect}/>
+                            <TextField label="E Posta" name="EMAIL" />
+                            <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED"                                 //onToggle={this.handleVendorIdRequiredToogle}
+                                onToggle={() => this.viewState.vendorIdDialog.open = true}/>
+                            <TcellRadioGroup label="Satıcı Cinsiyeti" name="GENDER" >
                                 <FormControlLabel value="male" control={<Radio />} label="Male" />
                                 <FormControlLabel value="female" control={<Radio />} label="Female" />
                                 <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
                             </TcellRadioGroup>
-                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={ValidationModel.$('PAYMENT_DATE').value} error={ValidationModel.$('PAYMENT_DATE').error}
-                                onChange={this.handleValidationFormChange} />
+                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" />
                         </HorizontalForm>                       
                             <CardActions style={{ display: ' flex', flexWrap: 'wrap' }}>
                                 <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
@@ -202,46 +170,30 @@ class FormSample extends React.Component {
                             </CardActions>   
                     </TcellForm>
                 </TcellCard >
-
-                <TcellCard name='contactCard' title='Contact Form' viewStore={viewStore}>
+                <TcellCard name='contactCard' title='Contact Form' >
                     <TcellForm ref={(r) => { this.contactForm = r; }} model={ContactModel}>
                         <HorizontalForm columnCount={3}>
-                            <TextField label="Satıcı No" name="VENDOR_ID" value={ContactModel.$('VENDOR_ID').value} error={ContactModel.$('VENDOR_ID').error} helperText={ContactModel.$('VENDOR_ID').error}
-                                onChange={this.handleContactFormChange} />
-                            <TextField label="Satıcı Adı" name="VENDOR_NAME" value={ContactModel.$('VENDOR_NAME').value} error={ContactModel.$('VENDOR_NAME').error} helperText={ContactModel.$('VENDOR_NAME').error}
-                                onChange={this.handleContactFormChange} />
-                            <TextField type="text" label="Ülke" name="COUNTRY" value={ContactModel.$('COUNTRY').value} error={ContactModel.$('COUNTRY').error} helperText={ContactModel.$('COUNTRY').error}
-                                onChange={this.handleContactFormChange} />
-                            <TcellCheckbox label="Karaliste" name="BLACKLIST" value={ContactModel.$('BLACKLIST').value} error={ContactModel.$('BLACKLIST').error}
-                                onChange={this.handleContactFormChange} />
-                            <TextField label="Satıcı Tag" name="VENDOR_TAG"
-                                onChange={this.handleContactFormChange} />
-                            {/* <TcellSelectField name="CITY" label="Şehir" options={ Cities } value={ContactModel.$('CITY').value} error={ContactModel.$('CITY').error}
-                                onChange={this.handleContactFormChange} /> */}
-
-
-
+                            <TextField label="Satıcı No" name="VENDOR_ID" />
+                            <TextField label="Satıcı Adı" name="VENDOR_NAME" />
+                            <TextField type="text" label="Ülke" name="COUNTRY" />
+                            <TcellCheckbox label="Karaliste" name="BLACKLIST" />
+                            <TextField label="Satıcı Tag" />                         
                         </HorizontalForm>
                         <Button icon="delete" label="Clear" raised accent onClick={this.handleContactFormClear}></Button>
                         <Button icon='bookmark' label='Show Data' onClick={this.handleContactPostModel} raised primary />
                     </TcellForm>
                 </TcellCard>
 
-                <TcellCard name='paymentCard' title='Payment Form' subtitle='Everything abount a contact is here...' viewStore={viewStore}>
+                <TcellCard name='paymentCard' title='Payment Form' subtitle='Everything abount a contact is here...' >
                     <TcellForm ref={(r) => { this.paymentForm = r; }} model={PaymentModel}>
                         <HorizontalForm columnCount={2}>
-                            <TextField label="Ödeme No" name="ID" value={PaymentModel.$('ID').value} error={PaymentModel.$('ID').error} helperText={PaymentModel.$('ID').error}
-                                onChange={this.handlePaymentFormChange} />
-                            <TextField label="Tutar" name="AMOUNT" value={PaymentModel.$('AMOUNT').value} error={PaymentModel.$('AMOUNT').error} helperText={PaymentModel.$('AMOUNT').error}
-                                onChange={this.handlePaymentFormChange} />
+                            <TextField label="Ödeme No" name="ID" />
+                            <TextField label="Tutar" name="AMOUNT" />
                             <TcellDropdown
-                                name="CURRENCY" value={PaymentModel.$('CURRENCY').value} error={PaymentModel.$('CURRENCY').error}
+                                name="CURRENCY" 
                                 source={Currencies}
-                                onSelect={this.handleCurrencySelect}
-                                onChange={this.handlePaymentFormChange}
-                            />
-                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" value={PaymentModel.$('PAYMENT_DATE').value} error={PaymentModel.$('PAYMENT_DATE').error}
-                                onChange={this.handlePaymentFormChange} />
+                                onSelect={this.handleCurrencySelect}/>
+                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" />
                         </HorizontalForm>
                         <Button icon="delete" label="Clear" raised accent onClick={this.handlePaymentFormClear}></Button>
                         <Button icon='bookmark' label='Show Data' onClick={this.handlePaymentPostModel} raised primary />

@@ -11,7 +11,7 @@ import Header from 'partials/Header';
 import Drawer from 'partials/Drawer';
 
 import viewStore from 'stores/formSampleViewStore';
-const stores = { viewStore };
+const stores = { viewStore  };
 
 ReactDOM.render(   
      <Provider { ...stores }>
