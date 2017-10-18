@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isArray from 'lodash/isArray';
 
-function HorizontalForm({ columnCount, children, ...props }) {
+function TcellMdlGrid({ columnCount, children, ...props }) {
     const gridClasses = classNames('mdl-grid');
     const cells = [];
 
@@ -24,7 +24,7 @@ function HorizontalForm({ columnCount, children, ...props }) {
         </div>
     );
 }
-HorizontalForm.propTypes = {
+TcellMdlGrid.propTypes = {
     columnCount: PropTypes.number
 };
-export default HorizontalForm;
+export default TcellMdlGrid;

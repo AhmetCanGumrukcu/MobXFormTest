@@ -16,16 +16,15 @@ import TcellSelectMultiple from 'tcellselectmultiple';
 import TcellDateTimePicker from 'tcelldatetimepicker'
 import TcellDataFieldButton from 'tcelldatafieldbutton';
 import TcellCard from 'tcellcard';
+import TcellDialog from 'tcelldialog';
+import TcellForm from 'tcellform';
+import TcellMdlGrid from 'tcellmdlgrid'
 
-import TcellForm from 'common/TcellForm';
-import HorizontalForm from 'common/Layout/HorizontalForm';
-import TcellDialog from 'common/TcellDialog';
+//import HorizontalForm from 'common/Layout/HorizontalForm';
 
 import ModelHelper from 'helpers/ModelHelper';
 import cityDialog from 'views/CityDialog';
-import { Currencies } from './Lookup'
-import { Countries } from './Lookup'
-import { Cities } from './Lookup'
+import { Currencies, Countries, Cities } from './Lookup'
 
 import Rules1 from './Rules1';
 import Rules2 from './Rules2';
@@ -103,6 +102,7 @@ class FormSample extends React.Component {
     }
     handleValidationPostModel = (model) => {
         let mymodel = this.validationForm.props.model;
+
         mymodel.validate({ showErrors: true })
             .then(({ isValid }) => {
                 if (!isValid) {
@@ -130,7 +130,7 @@ class FormSample extends React.Component {
         ValidationModel.$('VENDOR_ID').set('value', 23);
         ValidationModel.$('VENDOR_NAME').set('value', 'SONY');
         ValidationModel.$('EMAIL').set('value', 'sony@yahoo.com');
-        ValidationModel.$('PAYMENT_DATE').set('value', new Date());
+        ValidationModel.$('PAYMENT_DATE').set('value', "1972-02-07");
     }
     handleCityButtonClick = () => {
         this.viewState.cityDialog.open = true;
@@ -143,7 +143,7 @@ class FormSample extends React.Component {
                     //expanded={ true } 
                     >
                     <TcellForm ref={(r) => { this.validationForm = r; }} model={ValidationModel} >
-                        <HorizontalForm columnCount={3}>
+                        <TcellMdlGrid columnCount={3}>
                             <TcellInput label="Satıcı No" name="VENDOR_ID" />
                             <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} onClick={this.handleCityButtonClick} />
                             <TcellInput label="Satıcı Adı" name="VENDOR_NAME" />
@@ -167,7 +167,7 @@ class FormSample extends React.Component {
                                 <FormControlLabel value="female" control={<Radio />} label="Female" />
                                 <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
                             </TcellRadioGroup>
-                        </HorizontalForm>
+                        </TcellMdlGrid>
                         <CardActions style={{ display: ' flex', flexWrap: 'wrap' }}>
                             <TcellButton type="raised" color="primary" onClick={this.handleValidationFormClear}>
                                 Clear
@@ -183,13 +183,13 @@ class FormSample extends React.Component {
                 </TcellCard >
                 <TcellCard name='contactCard' title='Contact Form' expandable={ true } expanded={ false } >
                     <TcellForm ref={(r) => { this.contactForm = r; }} model={ContactModel}>
-                        <HorizontalForm columnCount={3}>
+                        <TcellMdlGrid columnCount={3}>
                             <TcellInput label="Satıcı No" name="VENDOR_ID" />
                             <TcellInput label="Satıcı Adı" name="VENDOR_NAME" />
                             <TcellInput type="text" label="Ülke" name="COUNTRY" />
                             <TcellCheckbox label="Karaliste" name="BLACKLIST" />
                             <TcellInput label="Satıcı Tag" />
-                        </HorizontalForm>
+                        </TcellMdlGrid>
                         <TcellButton type="raised" color="primary" onClick={this.handleContactFormClear}>
                             Clear
                         </TcellButton>
@@ -201,7 +201,7 @@ class FormSample extends React.Component {
 
                 <TcellCard title='Payment Form' subtitle='Everything abount a contact is here...' expandable={ true } expanded={ false } >
                     <TcellForm ref={(r) => { this.paymentForm = r; }} model={PaymentModel}>
-                        <HorizontalForm columnCount={2}>
+                        <TcellMdlGrid columnCount={2}>
                             <TcellInput label="Ödeme No" name="ID" />
                             <TcellInput label="Tutar" name="AMOUNT" />
                             <TcellSelectField
@@ -210,7 +210,7 @@ class FormSample extends React.Component {
                                 dataSource={Currencies}
                                 onSelect={this.handleCurrencySelect} />
                             {/* <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" /> */}
-                        </HorizontalForm>
+                        </TcellMdlGrid>
                         <TcellButton type="raised" color="primary" raised accent onClick={this.handlePaymentFormClear}>
                             Clear
                         </TcellButton>
