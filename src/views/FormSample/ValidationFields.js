@@ -42,21 +42,24 @@ export default observable({
         rules: 'required',
     },
     COUNTRY_MULTI: {
-        value: undefined        
+        value: undefined,
+        rules: 'required',        
     },
+  
     CITY: {
         value: undefined,
         rules: 'required',
     },
     VENDOR_ID_REQUIRED: {
-        value: false
+        //value: false
     },
     GENDER: {
         value: undefined,
         rules: 'required'
     },
     PAYMENT_DATE: {
-        value: undefined
+       value: undefined,
+       rules: 'required',
     }
 });
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { observer } from "mobx-react";
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
@@ -8,6 +7,7 @@ import Collapse from 'material-ui/transitions/Collapse';
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import { TcellComponent } from 'common/tcellcomponent'
 
 const styles = theme => ({
     root: {
@@ -32,22 +32,34 @@ const styles = theme => ({
     }
 });
 
-
-
-class TcellCard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleExpandClick = this.handleExpandClick.bind(this);
-        this.viewItem = this.props.viewStore.getItem(this.props.name);
+class TcellCard1 extends TcellComponent {
+    showExpansionIcon = () => {
+        if (this.props.expandable) {
+            return <IconButton className={classnames(this.props.classes.expand, { [this.props.classes.expandOpen]: this.props.expanded })}
+                onClick={this.props.onClick}
+                aria-expanded={this.props.expanded}
+                aria-label="Show more">
+                <ExpandMoreIcon />
+            </IconButton>
+        }
     }
 
-    viewItem = null;
+    getContent = () => {
+        if (this.props.expandable) {
+            return <Collapse in={this.props.expanded} transitionDuration="auto" >
+                <CardContent>
+                    {this.props.children}
+                </CardContent>
+            </Collapse>
+        } else {
+            return <CardContent>
+                {this.props.children}
+            </CardContent>
+        }
+    }
 
-    handleExpandClick() {
-        this.viewItem.expanded = !this.viewItem.expanded;
-    };
     render() {
-        const { raised, children, classes, title, subtitle, name } = this.props;
+        const { raised, classes, title, subtitle, name } = this.props;
 
         return (
             <Card raised={raised} classes={{ root: classes.root }}>
@@ -58,41 +70,87 @@ class TcellCard extends React.Component {
                     title={<div className={classes.flexContainer}>
                         <span>{title}</span>
                         <div className={classes.flexGrow} />
-                        <IconButton className={classnames(classes.expand, { [classes.expandOpen]: this.viewItem.expanded })}
-                            onClick={this.handleExpandClick}
-                            aria-expanded={this.viewItem.expanded}
-                            aria-label="Show more">
-                            <ExpandMoreIcon />
-                        </IconButton></div>}
+                        {this.showExpansionIcon()}
+                    </div>
+                    }
                     subheader={subtitle}
                 />
-                <Collapse in={this.viewItem.expanded} transitionDuration="auto" >
-                    <CardContent>
-                        {children}
-                    </CardContent>                  
-                </Collapse>
+                {this.getContent()}
             </Card>
 
         );
     }
 }
 
+class TcellCard extends TcellComponent {
+    constructor(props) {
+        super(props);
+        this.handleExpandClick = this.handleExpandClick.bind(this);
+        if (props.viewStoreObject) {                    
+            this.state = {
+                expanded: props.viewStoreObject.expanded
+            }
+        } else {
+            this.state = {
+                expanded: props.expanded
+            }
+        }
+    }
+
+    maintainViewState(viewStoreObject, expanded) {    
+        if (viewStoreObject) {
+            viewStoreObject["expanded"] = expanded ? true : false;
+        }
+    }
+
+    componentWillMount() {      
+        const { viewStoreObject } = this.props;
+        if (viewStoreObject) {
+            this.setState({ expanded: viewStoreObject.expanded ? true : false });
+        }
+    }
+
+    handleExpandClick() {
+    
+        const { viewStoreObject } = this.props;
+        let newState = !this.state.expanded;
+
+        this.setState({ expanded: newState }, this.maintainViewState(viewStoreObject, newState));
+    };
+
+    decideExpanded() {
+        const { expanded, onClick, ...others } = this.props;
+        return <TcellCard1
+            expanded={this.state.expanded}
+            onClick={this.handleExpandClick}
+            { ...others }>
+        </TcellCard1>
+    }
+    render() {
+        return (
+            this.decideExpanded()
+        );
+    }
+}
+
+
+
 TcellCard.propTypes = {
-    viewStore: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
     raised: PropTypes.bool,
     expanded: PropTypes.bool,
     title: PropTypes.string,
-    subtitle: PropTypes.string
+    subtitle: PropTypes.string,
+    expandable: PropTypes.bool,
+    onExpandClick: PropTypes.func
 }
 
 TcellCard.defaultProps = {
     raised: false,
-    expanded: false,
     title: 'Title is here...',
+    expandable: false,
     subtitle: ''
 }
 
-export default withStyles(styles)(observer(TcellCard));
+export default withStyles(styles)(TcellCard);
 
 

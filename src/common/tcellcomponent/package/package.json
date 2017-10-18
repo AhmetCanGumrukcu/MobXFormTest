@@ -1,0 +1,31 @@
+{
+    "name": "tcellcomponent",
+    "version": "0.0.1",
+    "description": "Base component built with React. This component is the base of all local components. It also contains themes.",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "keywords": [
+        "turkcell",
+        "tcellcomponent",
+        "base"
+    ],
+    "homepage": "http://www.turkcell.com",
+    "files": [
+        "LICENSE",
+        "index.js",
+        "README.md"
+    ],
+    "main": "index.js",
+    "author": {
+        "name": "Nems Team",
+        "email": "nemst@turkcell.com",
+        "url": "http://www.turkcell.com"
+    },
+    "license": "Turkcell ",
+    "dependencies": {
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1"
+    }
+}

@@ -6,9 +6,8 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import  { ListItem } from 'material-ui/List';
 import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import IconButton from 'material-ui/IconButton';
-import { observable, observe } from 'mobx';
-import { observer } from "mobx-react";
-import _ from 'lodash';
+import { TcellComponent } from 'common/tcellcomponent'
+import filter from 'lodash/filter';
 
 const styles = theme => ({
     root: {
@@ -16,83 +15,119 @@ const styles = theme => ({
     }
 });
 
-class ReadOnlyTextField extends Component {
+class ReadOnlyTextField extends TcellComponent {
   render() {
+    const { value, ...others } = this.props;
     return (
-      <TextField { ...this.props }></TextField>
+      <TextField value={ value ? value : '' } { ...others }></TextField>
     )
   };
 }
 
-@observer
-class TcellSelectField extends Component {
+class TcellSelectField extends TcellComponent {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+    //this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      anchorEl: null,
+      open: false,
+      display: null
+    };
+  }  
 
-  compState = observable({
-    anchorEl: undefined,
-    open: false,
-    display: undefined
-  });
-
-  handleClick(event) {
-    this.compState.open = true;
-    this.compState.anchorEl = event.currentTarget;
+  handleClick = (event) => {
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget
+    });    
   };
 
   handleRequestClose = () => {
-    this.compState.open = false;
+    this.setState({
+      open: false
+    })
   };
 
-  handleMenuItemClick = param => {
+  handleMenuItemClick = (param) => {
     let myEvent = {
       target: {
         name: this.props.name,
         value: param.option.id
       }
     }
-    this.compState.open = false;
-    this.compState.display = param.option.text;
+    this.setState({
+      open: false,
+      display: param.option.text
+    });
     this.props.onChange(myEvent);
   }
 
   setDisplayFromDatasource(dataSource, id) {
-    if (dataSource && dataSource.length > 0) {
-      let found = _.filter(dataSource, (item) => item.id === id);
-      this.compState.display = found && found.length > 0 ? found[0].text : undefined;
+    if(!id){
+      this.setState({
+        display: null 
+      });
+    } else if (dataSource && dataSource.length > 0) {
+      let found = filter(dataSource, (item) => item.id === id);
+      this.setState({
+        display: found && found.length > 0 ? found[0].text : null 
+      });
     } else {
-      this.compState.display = id;
+      this.setState({
+        display: id        
+      });      
     }
-    //todo
-    setTimeout(() => {
-      let oldVal = this.compState.display;
-      this.compState.display = "";
-      this.compState.display = oldVal;
-    }, 50)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {   
     if (this.props.value != nextProps.value) {
       const { dataSource } = this.props;
       const { value } = nextProps;
-      this.compState.value = value;
+      this.setState({
+        value: value
+      });
       this.setDisplayFromDatasource(dataSource, value)
     }
   }
   componentDidMount() {
+    const { dataSource, value } = this.props;
     let inputNode = ReactDOM.findDOMNode(this.textField);
-    let inputs = inputNode.querySelectorAll('input');
-    try {
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i].setAttribute('readonly', 'readonly')
-      }
-    } catch (e) {
-      alert(e);
+    let inputs = inputNode.querySelectorAll('input');   
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].setAttribute('readonly', 'readonly')
     }
-  }
 
+    const firstDiv = this.getClosestUp(inputNode, 'div');
+    const secondDiv = this.getClosestUp(firstDiv, 'div'); 
+    if(secondDiv) secondDiv.style.paddingTop = "3px";   
+
+    this.setDisplayFromDatasource(dataSource, value)
+
+  }
+  getClosestUp = function(elem, selector) {
+    // Element.matches() polyfill
+    if (!Element.prototype.matches) {
+        Element.prototype.matches =
+            Element.prototype.matchesSelector ||
+            Element.prototype.mozMatchesSelector ||
+            Element.prototype.msMatchesSelector ||
+            Element.prototype.oMatchesSelector ||
+            Element.prototype.webkitMatchesSelector ||
+            function (s) {
+                var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                    i = matches.length;
+                while (--i >= 0 && matches.item(i) !== this) { }
+                return i > -1;
+            };
+    }
+
+    // Get closest match
+    for (; elem && elem !== document; elem = elem.parentNode) {
+        if (elem.matches(selector)) return elem;
+    }
+
+    return null;
+}
   render() {
     const { dataSource, onChange, value, classes, ...others } = this.props;
 
@@ -101,10 +136,10 @@ class TcellSelectField extends Component {
       <div>
         <ListItem classes={{ root: classes.root }}>
           <ReadOnlyTextField ref={(r) => { this.textField = r }}
-            aria-owns={this.compState.open ? 'simple-menu' : null}
+            aria-owns={this.state.open ? 'simple-menu' : null}
             aria-haspopup="true"
             onClick={this.handleClick}
-            value={this.compState.display}
+            value={this.state.display}
             { ...others }
           >
           </ReadOnlyTextField>
@@ -112,8 +147,8 @@ class TcellSelectField extends Component {
         </ListItem>
         <Menu
           id="simple-menu"
-          anchorEl={this.compState.anchorEl}
-          open={this.compState.open}
+          anchorEl={this.state.anchorEl}
+          open={this.state.open}
           onRequestClose={this.handleRequestClose}
         >
           {dataSource.map((option, index) =>
@@ -130,4 +165,4 @@ class TcellSelectField extends Component {
   }
 }
 
-export default withStyles(styles)(observer(TcellSelectField));
+export default withStyles(styles)(TcellSelectField);

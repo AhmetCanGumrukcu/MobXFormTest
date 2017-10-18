@@ -1,31 +1,28 @@
 import React from 'react';
 import { observer, inject } from "mobx-react";
-import Button from 'react-toolbox/lib/button';
 import { observable } from "mobx";
 
-import TextField from 'material-ui/TextField';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 import { FormControlLabel } from 'material-ui/Form';
 import Radio from 'material-ui/Radio';
 import { CardActions } from 'material-ui/Card';
 
+import TcellCheckbox from 'tcellcheckbox';
+import TcellInput from 'tcellinput';
+import TcellButton from 'tcellbutton'
+import TcellRadioGroup from 'tcellradiogroup';
+import TcellSelectField from 'tcellselectfield';
+import TcellSelectMultiple from 'tcellselectmultiple';
+import TcellDateTimePicker from 'tcelldatetimepicker'
+import TcellDataFieldButton from 'tcelldatafieldbutton';
+import TcellCard from 'tcellcard';
+
 import TcellForm from 'common/TcellForm';
 import HorizontalForm from 'common/Layout/HorizontalForm';
-import TcellInput from 'common/inputs/TcellInput';
-import TcellCheckbox from 'common/TcellCheckbox';
-import TcellRadioGroup from 'common/TcellRadioGroup';
-import TcellDatePicker from 'common/TcellDatePicker';
-import TcellDropdown from 'common/TcellDropdown';
-import TcellCard from 'common/TcellCard';
-import TcellSelectField from 'common/TcellSelectField';
-import TcellSelectMultiple from 'common/TcellSelectMultiple';
-import TcellDataFieldButton from 'common/TcellDataFieldButton';
 import TcellDialog from 'common/TcellDialog';
 
 import ModelHelper from 'helpers/ModelHelper';
-
 import cityDialog from 'views/CityDialog';
-
 import { Currencies } from './Lookup'
 import { Countries } from './Lookup'
 import { Cities } from './Lookup'
@@ -59,8 +56,7 @@ class FormSample extends React.Component {
         },
         vendorIdDialog: {
             open: false,
-            cancel: (value) => {
-                debugger
+            cancel: (value) => {              
                 ValidationModel.$('VENDOR_ID_REQUIRED').set('value', !ValidationModel.$('VENDOR_ID_REQUIRED').value);
                 this.viewState.vendorIdDialog.open = false
             },
@@ -95,12 +91,13 @@ class FormSample extends React.Component {
                 }
             });
     }
+
     handleContactFormClear = () => {
         this.contactForm.clear();
     }
     handlePaymentFormClear = () => {
         this.paymentForm.clear();
-    }   
+    }
     handleCountrySelect = (data) => {
         console.log(data);
     }
@@ -138,76 +135,103 @@ class FormSample extends React.Component {
     handleCityButtonClick = () => {
         this.viewState.cityDialog.open = true;
     }
-    render() {      
+    render() {        
+        const { viewStore } = this.props;        
         return (
             <div>
-                <TcellCard name='validationCard' title='Validation Form'>
+                <TcellCard title='Validation Form' expandable={ true }   viewStoreObject={ viewStore.validationCard }
+                    //expanded={ true } 
+                    >
                     <TcellForm ref={(r) => { this.validationForm = r; }} model={ValidationModel} >
                         <HorizontalForm columnCount={3}>
-                            <TextField label="Satıcı No" name="VENDOR_ID" />
-                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities}  onClick={this.handleCityButtonClick}/>
-                            <TextField label="Satıcı Adı" name="VENDOR_NAME"  />
-                            <TcellSelectField label="Ülke" name="COUNTRY" 
+                            <TcellInput label="Satıcı No" name="VENDOR_ID" />
+                            <TcellDataFieldButton name="CITY" label="Şehir" dataSource={Cities} onClick={this.handleCityButtonClick} />
+                            <TcellInput label="Satıcı Adı" name="VENDOR_NAME" />
+                            <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED"
+                                onToggle={() => this.viewState.vendorIdDialog.open = true} />
+                            <TcellDateTimePicker
+                                label="Order Date"
+                                name="PAYMENT_DATE"
+                                showCalendar={true}
+                                showClock={false} />
+                            <TcellSelectMultiple label="Ülke2" name="COUNTRY_MULTI"
                                 dataSource={Countries}
-                                onSelect={this.countrySelect}/>
-                            <TcellSelectMultiple label="Ülke2" name="COUNTRY_MULTI" 
+                                onSelect={this.countrySelect} />
+                            <TcellInput label="E Posta" name="EMAIL" />
+                            <TcellSelectField label="Ülke" name="COUNTRY"
                                 dataSource={Countries}
-                                onSelect={this.countrySelect}/>
-                            <TextField label="E Posta" name="EMAIL" />
-                            <TcellCheckbox label="Satıcı No zorunlu" name="VENDOR_ID_REQUIRED"                                 //onToggle={this.handleVendorIdRequiredToogle}
-                                onToggle={() => this.viewState.vendorIdDialog.open = true}/>
+                                onSelect={this.countrySelect} />
+
                             <TcellRadioGroup label="Satıcı Cinsiyeti" name="GENDER" >
                                 <FormControlLabel value="male" control={<Radio />} label="Male" />
                                 <FormControlLabel value="female" control={<Radio />} label="Female" />
                                 <FormControlLabel value="other" control={<Radio />} label="Other" disabled />
                             </TcellRadioGroup>
-                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" />
-                        </HorizontalForm>                       
-                            <CardActions style={{ display: ' flex', flexWrap: 'wrap' }}>
-                                <Button icon="delete" label="Clear" raised accent onClick={this.handleValidationFormClear}></Button>
-                                <Button icon='bookmark' label='Show Data' onClick={this.handleValidationPostModel} raised primary />
-                                <Button label='Set Data' onClick={this.handleSetValidationCity} raised primary />
-                            </CardActions>   
+                        </HorizontalForm>
+                        <CardActions style={{ display: ' flex', flexWrap: 'wrap' }}>
+                            <TcellButton type="raised" color="primary" onClick={this.handleValidationFormClear}>
+                                Clear
+                    </TcellButton>
+                            <TcellButton type="raised" color="primary" onClick={this.handleValidationPostModel}>
+                                Show data
+                    </TcellButton>
+                            <TcellButton type="raised" color="primary" onClick={this.handleSetValidationCity} >
+                                Set data
+                    </TcellButton>
+                        </CardActions>
                     </TcellForm>
                 </TcellCard >
-                <TcellCard name='contactCard' title='Contact Form' >
+                <TcellCard name='contactCard' title='Contact Form' expandable={ true } expanded={ false } >
                     <TcellForm ref={(r) => { this.contactForm = r; }} model={ContactModel}>
                         <HorizontalForm columnCount={3}>
-                            <TextField label="Satıcı No" name="VENDOR_ID" />
-                            <TextField label="Satıcı Adı" name="VENDOR_NAME" />
-                            <TextField type="text" label="Ülke" name="COUNTRY" />
+                            <TcellInput label="Satıcı No" name="VENDOR_ID" />
+                            <TcellInput label="Satıcı Adı" name="VENDOR_NAME" />
+                            <TcellInput type="text" label="Ülke" name="COUNTRY" />
                             <TcellCheckbox label="Karaliste" name="BLACKLIST" />
-                            <TextField label="Satıcı Tag" />                         
+                            <TcellInput label="Satıcı Tag" />
                         </HorizontalForm>
-                        <Button icon="delete" label="Clear" raised accent onClick={this.handleContactFormClear}></Button>
-                        <Button icon='bookmark' label='Show Data' onClick={this.handleContactPostModel} raised primary />
+                        <TcellButton type="raised" color="primary" onClick={this.handleContactFormClear}>
+                            Clear
+                        </TcellButton>
+                        <TcellButton type="raised" color="primary" onClick={this.handleContactPostModel}>
+                            Show data
+                        </TcellButton>
                     </TcellForm>
                 </TcellCard>
 
-                <TcellCard name='paymentCard' title='Payment Form' subtitle='Everything abount a contact is here...' >
+                <TcellCard title='Payment Form' subtitle='Everything abount a contact is here...' expandable={ true } expanded={ false } >
                     <TcellForm ref={(r) => { this.paymentForm = r; }} model={PaymentModel}>
                         <HorizontalForm columnCount={2}>
-                            <TextField label="Ödeme No" name="ID" />
-                            <TextField label="Tutar" name="AMOUNT" />
-                            <TcellDropdown
-                                name="CURRENCY" 
-                                source={Currencies}
-                                onSelect={this.handleCurrencySelect}/>
-                            <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" />
+                            <TcellInput label="Ödeme No" name="ID" />
+                            <TcellInput label="Tutar" name="AMOUNT" />
+                            <TcellSelectField
+                                label="Para birimi"
+                                name="CURRENCY"
+                                dataSource={Currencies}
+                                onSelect={this.handleCurrencySelect} />
+                            {/* <TcellDatePicker label="Ödeme Tarihi" name="PAYMENT_DATE" /> */}
                         </HorizontalForm>
-                        <Button icon="delete" label="Clear" raised accent onClick={this.handlePaymentFormClear}></Button>
-                        <Button icon='bookmark' label='Show Data' onClick={this.handlePaymentPostModel} raised primary />
+                        <TcellButton type="raised" color="primary" raised accent onClick={this.handlePaymentFormClear}>
+                            Clear
+                        </TcellButton>
+                        <TcellButton type="raised" color="primary" onClick={this.handlePaymentPostModel}>
+                            Show data
+                        </TcellButton>
                     </TcellForm>
                 </TcellCard>
-
+             
                 <TcellDialog name="cityDialog" title=" Şehir Seçiniz "
                     open={this.viewState.cityDialog.open}>
                     <DialogContent>
                         {cityDialog}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.viewState.cityDialog.cancel} color="primary">Cancel</Button>
-                        <Button onClick={this.viewState.cityDialog.ok.bind(this, cityDialog.prototype.dialogValue())} color="primary">Ok</Button>
+                        <TcellButton type="flat" color="primary" onClick={this.viewState.cityDialog.cancel}>
+                            Cancel
+                        </TcellButton>
+                        <TcellButton type="flat" color="primary" onClick={this.viewState.cityDialog.ok.bind(this, cityDialog.prototype.dialogValue())}>
+                            Ok
+                        </TcellButton>
                     </DialogActions>
                 </TcellDialog>
 
@@ -217,8 +241,12 @@ class FormSample extends React.Component {
                         <span>"Satıcı No gerekliliği değişsin mi?"</span>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.viewState.vendorIdDialog.cancel.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)} color="primary">Cancel</Button>
-                        <Button onClick={this.viewState.vendorIdDialog.ok.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)} color="primary">Ok</Button>
+                        <TcellButton type="flat" color="primary" onClick={this.viewState.vendorIdDialog.cancel.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)}>
+                            Cancel
+                        </TcellButton>
+                        <TcellButton type="flat" color="primary" onClick={this.viewState.vendorIdDialog.ok.bind(this, ValidationModel.$('VENDOR_ID_REQUIRED').value)}>
+                            OK
+                        </TcellButton>
                     </DialogActions>
                 </TcellDialog>
             </div >

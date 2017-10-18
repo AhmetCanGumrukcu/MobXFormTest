@@ -50,16 +50,17 @@ module.exports = function (source) {
 			}
 			else if (node.type == 'JSXOpeningElement') {
 				if (node.name.type == 'JSXIdentifier') {
-					if (node.name.name == 'TcellCard') {
-						if(targetViewStore) {
-							let starting = node.name.end;
-							starting += addedIndexCounter;
-							let viewStoreProperty = ` viewStore={ this.props.${targetViewStore} } `;
-							addedIndexCounter += viewStoreProperty.length;
-							source = source.substring(0, starting) + viewStoreProperty + source.substring(starting);
-							isViewDirty = true;
-						}	
-					} else if (node.name.name == 'TcellForm') {
+					// if (node.name.name == 'TcellCard') {
+					// 	if(targetViewStore) {
+					// 		let starting = node.name.end;
+					// 		starting += addedIndexCounter;
+					// 		let viewStoreProperty = ` viewStore={ this.props.${targetViewStore} } `;
+					// 		addedIndexCounter += viewStoreProperty.length;
+					// 		source = source.substring(0, starting) + viewStoreProperty + source.substring(starting);
+					// 		isViewDirty = true;
+					// 	}	
+					// } else 
+					if (node.name.name == 'TcellForm') {
 						insideForm = true;
 						node.attributes.forEach(attribute => {
 							if (attribute.name.name == 'ref') {

@@ -1,0 +1,19 @@
+[
+    {
+        "name": "TcellComponent",
+        "desc": "Base Turkcell Component",
+        "sample": ""
+    },
+    {
+        "name": "Props",
+        "infoArray" : [ 
+
+        ]
+    },
+    {
+        "name": "Events",
+        "infoArray" : [ 
+
+        ]
+    }
+]
