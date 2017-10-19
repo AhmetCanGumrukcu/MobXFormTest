@@ -19,8 +19,7 @@ import TcellCard from 'tcellcard';
 import TcellDialog from 'tcelldialog';
 import TcellForm from 'tcellform';
 import TcellMdlGrid from 'tcellmdlgrid'
-
-//import HorizontalForm from 'common/Layout/HorizontalForm';
+import { TcellComponent } from 'tcellcomponent'
 
 import ModelHelper from 'helpers/ModelHelper';
 import cityDialog from 'views/CityDialog';
@@ -40,7 +39,7 @@ let ValidationModel = ModelHelper.generateModel(ValidationFields);
 ValidationModel.$('VENDOR_ID_REQUIRED').set('value', true);
 
 @inject('viewStore') @observer
-class FormSample extends React.Component {
+class FormSample extends TcellComponent {
     viewState = observable({
         cityDialog: {
             open: false,

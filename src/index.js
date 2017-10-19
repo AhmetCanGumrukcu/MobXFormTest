@@ -6,21 +6,21 @@ import { Provider } from 'mobx-react';
 import Home from 'views/Home';
 import FormSample from 'views/FormSample';
 import ValidationSample from 'views/ValidationSample';
-
 import Header from 'partials/Header';
 import Drawer from 'partials/Drawer';
 
 import viewStore from 'stores/formSampleViewStore';
-const stores = { viewStore  };
 
-ReactDOM.render(   
-     <Provider { ...stores }>
+const stores = { viewStore };
+
+ReactDOM.render(
+    <Provider { ...stores }>
         <BrowserRouter>
             <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-                <Header></Header>
+                <Header></Header>              
                 <Drawer></Drawer>
                 <main className="mdl-layout__content">
-                    <Switch>                     
+                    <Switch>
                         <Route path="/formsample" component={FormSample} />
                         <Route path="/" component={Home} />
                     </Switch>

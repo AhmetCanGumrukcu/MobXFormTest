@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { observer } from "mobx-react";
 
 import Radio from 'material-ui/Radio';
-import TcellRadioGroup from 'common/TcellRadioGroup';
 import { FormControlLabel } from 'material-ui/Form';
-import TcellForm from 'common/TcellForm';
-import HorizontalForm from 'common/Layout/HorizontalForm';
-import TcellDataFieldButton from 'common/TcellDataFieldButton';
+
+import TcellRadioGroup from 'tcellradiogroup';
+import TcellForm from 'tcellform';
+import HorizontalForm from 'tcellmdlgrid';
+import TcellDataFieldButton from 'tcelldatafieldbutton';
+import { TcellComponent } from 'tcellcomponent'
 
 import ModelHelper from 'helpers/ModelHelper';
 
@@ -18,7 +20,7 @@ let CityModel = ModelHelper.generateModel(CityFields);
 
 
 @observer
-class CityDialog extends Component {
+class CityDialog extends TcellComponent {
 
     constructor(props) {
         super(props);
