@@ -8,9 +8,7 @@ import FormSample from 'views/FormSample';
 import ValidationSample from 'views/ValidationSample';
 import Header from 'partials/Header';
 import Drawer from 'partials/Drawer';
-
 import viewStore from 'stores/formSampleViewStore';
-
 const stores = { viewStore };
 
 ReactDOM.render(
