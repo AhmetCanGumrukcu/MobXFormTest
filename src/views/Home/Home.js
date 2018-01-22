@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from 'images/logo.svg';
-import 'style/App.css';
 
 class Home extends Component {
   constructor(props){

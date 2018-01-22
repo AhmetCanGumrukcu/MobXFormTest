@@ -98,8 +98,10 @@ module.exports = function (source) {
 	});
 
 	if(isViewDirty){
-		let fileName = className+"_"+(new Date()).toISOString().slice(0, 10)+"_"+Math.random().toString(35).substr(2,10);
-		fs.writeFileSync('./logs/views/'+fileName, source);
+		//let fileName = className+"_"+(new Date()).toISOString().slice(0, 10)+"_"+Math.random().toString(35).substr(2,10);
+		//fs.writeFileSync('./logs/views/'+fileName, source);
+	
+		fs.writeFileSync('./logs/views/'+className, source);
 	}
 	return source;
 };

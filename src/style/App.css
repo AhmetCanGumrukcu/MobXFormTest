@@ -23,3 +23,10 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+a.mdl-navigation__link{
+  width: 100%;
+  border:1px solid red;
+}
+

@@ -4,3 +4,38 @@ body {
   font-family: sans-serif;
   background: #eee;
 }
+
+a.test{
+  width: 100%;
+}
+
+ul.collapseMenu{
+  margin:0;
+  padding:0;
+  list-style: none;
+  border:1px solid red;
+}
+
+.zeroMarginPadding{
+  padding: 0 !important;
+  margin:0 !important;
+}
+
+.zeroMarginPadding  div{
+  margin:0;
+  padding: 0;
+}
+
+.zeroMarginPadding  a{
+  text-decoration: none !important;
+  color:rgba(0, 0, 0, 0.87);
+}
+
+.ulItemPadding{
+  padding: 0 0 0 15px !important;
+}
+
+.ulItemPadding a{
+  text-decoration: none;
+  color:rgba(0, 0, 0, 0.87);
+}

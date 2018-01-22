@@ -1,7 +1,7 @@
 import { observable } from "mobx";
 import { action } from "mobx";
 
-class FormSampleViewStore {
+export default class FormSampleViewStore {
     contactCard = observable({
         expanded: false
     })
@@ -18,21 +18,3 @@ class FormSampleViewStore {
         console.log("One time FormSampleViewStore constructor...");
     }
 }
-
-export default new FormSampleViewStore();
-
-
-// export default observable({
-//     contactCard: {
-//         expanded: false
-//     },
-//     paymentCard: {
-//         expanded: true
-//     },
-//     validationCard: {
-//         expanded: true
-//     },
-//     getItem: action(function (value) {
-//         return this[value];
-//     })
-// })

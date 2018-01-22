@@ -24,7 +24,6 @@ import { TcellComponent } from 'tcellcomponent'
 import ModelHelper from 'helpers/ModelHelper';
 import cityDialog from 'views/CityDialog';
 import { Currencies, Countries, Cities } from './Lookup'
-
 import Rules1 from './Rules1';
 import Rules2 from './Rules2';
 
@@ -38,7 +37,7 @@ let ValidationModel = ModelHelper.generateModel(ValidationFields);
 
 ValidationModel.$('VENDOR_ID_REQUIRED').set('value', true);
 
-@inject('viewStore') @observer
+@inject("store") @observer
 class FormSample extends TcellComponent {
     viewState = observable({
         cityDialog: {
@@ -134,11 +133,13 @@ class FormSample extends TcellComponent {
     handleCityButtonClick = () => {
         this.viewState.cityDialog.open = true;
     }
-    render() {        
-        const { viewStore } = this.props;        
+    render() {             
+        //debugger    
+        const { formSampleViewStore } = this.props.store;  
         return (
             <div>
-                <TcellCard title='Validation Form' expandable={ true }   viewStoreObject={ viewStore.validationCard }
+                <TcellCard title='Validation Form' expandable={ true }   
+                    viewStoreObject={ formSampleViewStore.validationCard }
                     //expanded={ true } 
                     >
                     <TcellForm ref={(r) => { this.validationForm = r; }} model={ValidationModel} >
